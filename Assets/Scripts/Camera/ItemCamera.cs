@@ -1,4 +1,6 @@
+using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -23,6 +25,7 @@ public class ItemCamera : BasePickableItem, IUsable
     [Header("Lens")]
     [SerializeField] private Camera lensCamera;
     [SerializeField] private Canvas screenCanvas;
+    [SerializeField] private GameObject flash;
 
     [Tooltip("lensCamera.targetTexture ile aynı RenderTexture olmalı.")]
     [SerializeField] private RenderTexture viewfinderTexture;
@@ -60,7 +63,7 @@ public class ItemCamera : BasePickableItem, IUsable
     /// Tek fotoğraf çek. Viewfinder RT'sini Texture2D'ye kopyalar.
     /// Çağrı: oyuncu input'u veya harici sistem.
     /// </summary>
-    public bool TakePhoto()
+    private bool TakePhoto()
     {
         if (localPhotos.Count >= maxLocalPhotos)
         {
@@ -74,24 +77,50 @@ public class ItemCamera : BasePickableItem, IUsable
             return false;
         }
 
-        // RenderTexture → Texture2D
         Texture2D snap = new Texture2D(photoResolution.x, photoResolution.y, TextureFormat.RGB24, false);
 
         RenderTexture prev = RenderTexture.active;
         RenderTexture.active = viewfinderTexture;
 
-        // RT çözünürlüğü farklıysa tüm RT'yi al, sonra scale et
         snap.ReadPixels(new Rect(0, 0, viewfinderTexture.width, viewfinderTexture.height), 0, 0);
         snap.Apply();
-
+        
         RenderTexture.active = prev;
+        
+        SaveAsPNG(snap);
 
         localPhotos.Add(snap);
 
         if (shutterSound) shutterSound.Play();
+        if (flash) StartCoroutine(FlashBang());
 
-        Debug.Log($"[GameCamera] Fotoğraf çekildi. Toplam: {localPhotos.Count}/{maxLocalPhotos}");
         return true;
+    }
+
+    private IEnumerator FlashBang()
+    {
+        flash.SetActive(true);
+        yield return new WaitForSeconds(0.1f);
+        flash.SetActive(false);
+    }
+
+    private void SaveAsPNG(Texture2D textureToSave)
+    {
+        byte[] bytes = textureToSave.EncodeToPNG();
+
+        string folderPath = Path.Combine(Application.persistentDataPath, "SavedPhotos");
+        if (!Directory.Exists(folderPath))
+            Directory.CreateDirectory(folderPath);
+
+        string filePath = Path.Combine(folderPath, $"Photo_{System.DateTime.Now:yyyyMMdd_HHmmss}.png");
+        try
+        {
+            File.WriteAllBytes(filePath, bytes);
+        }
+        catch (System.Exception e)
+        {
+            Debug.LogError($"Save failed: {e.Message}");
+        }
     }
 
     /// <summary>
