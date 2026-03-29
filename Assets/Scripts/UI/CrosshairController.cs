@@ -15,49 +15,49 @@ public class CrosshairController : MonoBehaviour
     [SerializeField] private float sizeSpeed = 10f;
 
     private bool isCrosshairEnabled = true;
+    private PlayerInteraction interaction;
 
-    private void Update()
+    private void Start()
     {
-        UpdateCrosshairSprite();
-        UpdateCrosshairSize();
+        interaction = PlayerInteraction.Instance;
+        interaction.OnShouldCheckInteractionStateChanged += PlayerInteract_CheckInteractChanged;
+        interaction.OnDetectionChanged += PlayerInteract_HandleDetectionChanged;
     }
 
-    private void UpdateCrosshairSprite()
+    private void PlayerInteract_CheckInteractChanged(bool checkInteraction)
     {
-        if (!crosshairImage) return;
-
-        var interaction = PlayerInteraction.Instance;
-
-        if (!interaction.IsInteractionEnabled)
-        {
-            crosshairImage.gameObject.SetActive(false);
-            isCrosshairEnabled = false;
-        }
-        else if (interaction.IsInteractionEnabled && !isCrosshairEnabled)
-        {
-            crosshairImage.gameObject.SetActive(true);
-            isCrosshairEnabled=true;
-        }
-
-
-        if (interaction.DetectedPickable != null)
+        isCrosshairEnabled = checkInteraction;
+        crosshairImage.gameObject.SetActive(checkInteraction);
+    }
+    
+    private void PlayerInteract_HandleDetectionChanged(IPickable pickable, IInteractable interactable)
+    {
+        if (pickable != null)
             crosshairImage.sprite = handCrosshair;
-        else if (interaction.DetectedInteractable != null)
+        else if (interactable != null)
             crosshairImage.sprite = interactCrosshair;
         else
             crosshairImage.sprite = defaultCrosshair;
     }
 
+    private void Update()
+    {
+        if (!isCrosshairEnabled) return;
+        UpdateCrosshairSize();
+    }
+
     private void UpdateCrosshairSize()
     {
-        if (!crosshairImage) return;
-
-        float targetSize = PlayerInteraction.Instance.HasDetection ? highlightSize : normalSize;
+        float targetSize = interaction.HasDetection ? highlightSize : normalSize;
         float currentSize = crosshairImage.rectTransform.sizeDelta.x;
         float newSize = Mathf.Lerp(currentSize, targetSize, Time.deltaTime * sizeSpeed);
 
         crosshairImage.rectTransform.sizeDelta = new Vector2(newSize, newSize);
     }
 
-    
+    private void OnDestroy()
+    {
+        interaction.OnDetectionChanged -= PlayerInteract_HandleDetectionChanged;
+        interaction.OnShouldCheckInteractionStateChanged -= PlayerInteract_CheckInteractChanged;
+    }
 }

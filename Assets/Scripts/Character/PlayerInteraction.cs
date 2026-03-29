@@ -1,19 +1,11 @@
-using MoreMountains.Tools;
+using System;
 using UnityEngine;
 
 /// <summary>
-/// Oyuncunun önüne raycast atar, IPickable ve IInteractable tespiti yapar.
-/// E tuşuna basınca uygun aksiyonu tetikler.
-/// 
 /// TEŞHİS ÖNCELIK SIRASI (aynı objede ikisi varsa):
 ///   1) Elde item yoksa + IPickable varsa → item al
 ///   2) Elde item varsa + IInteractable varsa → interact et
 ///   3) Elde item yoksa + sadece IInteractable varsa → interact et
-/// 
-/// SAHNE KURULUMU:
-///   - Bu script Player (veya Camera) objesine ekle
-///   - interactableLayer: Raycast'in çarpacağı layer'ları seç
-///     (alınabilir ve/veya etkileşimli tüm objeler bu layer'larda olmalı)
 /// </summary>
 public class PlayerInteraction : MonoBehaviour
 {
@@ -23,15 +15,17 @@ public class PlayerInteraction : MonoBehaviour
     [SerializeField] private float interactionRange = 4f;
     [SerializeField] private LayerMask interactableLayer;
 
-
+    private bool shouldCheckInteraction = true;
+    private Camera mainCam;
+    
+    //---------Public API-----------
+    
     public IPickable DetectedPickable { get; private set; }
     public IInteractable DetectedInteractable { get; private set; }
     public bool HasDetection => DetectedPickable != null || DetectedInteractable != null;
-    public bool IsInteractionEnabled => shouldCheckInteraction;
-
-    private bool shouldCheckInteraction = true;
-    private Camera mainCam;
-
+    public event Action<bool> OnShouldCheckInteractionStateChanged;
+    public event Action<IPickable, IInteractable> OnDetectionChanged;
+    
     private void Awake()
     {
         if (Instance != null && Instance != this)
@@ -61,33 +55,43 @@ public class PlayerInteraction : MonoBehaviour
         shouldCheckInteraction = false;
         DetectedPickable = null;
         DetectedInteractable = null;
+        OnShouldCheckInteractionStateChanged?.Invoke(shouldCheckInteraction);
     }
 
     public void EnableInteraction()
     {
         shouldCheckInteraction = true;
+        OnShouldCheckInteractionStateChanged?.Invoke(shouldCheckInteraction);
     }
 
     private void PerformRaycast()
     {
+        var prevPickable = DetectedPickable;
+        var prevInteractable = DetectedInteractable;
+    
         DetectedPickable = null;
         DetectedInteractable = null;
 
-        if (!mainCam) return;
-
-        Ray ray = mainCam.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0f));
-
-        if (!Physics.Raycast(ray, out RaycastHit hit, interactionRange, interactableLayer)) return;
-
-        Collider hitCol = hit.collider;
-
-        if (!PlayerItemHolder.Instance.IsHoldingItem)
+        if (mainCam)
         {
-            hitCol.TryGetComponent(out IPickable detectedPick);
-            DetectedPickable = PlayerItemHolder.Instance.IsHoldingItem ? null : detectedPick;
+            Ray ray = mainCam.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0f));
+
+            if (Physics.Raycast(ray, out RaycastHit hit, interactionRange, interactableLayer))
+            {
+                Collider hitCol = hit.collider;
+
+                if (!PlayerItemHolder.Instance.IsHoldingItem)
+                {
+                    hitCol.TryGetComponent(out IPickable detectedPick);
+                    DetectedPickable = detectedPick;
+                }
+
+                DetectedInteractable = hitCol.GetComponent<IInteractable>();
+            }
         }
-        
-        DetectedInteractable = hitCol.GetComponent<IInteractable>();
+
+        if (prevPickable != DetectedPickable || prevInteractable != DetectedInteractable)
+            OnDetectionChanged?.Invoke(DetectedPickable, DetectedInteractable);
     }
 
     private void HandleInteractInput()

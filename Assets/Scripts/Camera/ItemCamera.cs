@@ -124,6 +124,7 @@ public class ItemCamera : BasePickableItem, IUsable
         isHeld = true;
         lensCamera.enabled = true;
         screenCanvas.gameObject.SetActive(true);
+        //TODO: disable crosshair
     }
 
     protected override void OnDropped()

@@ -4,16 +4,6 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-/// <summary>
-/// Tüm uygulama pencerelerinin base sınıfı.
-/// Prefab yapısı:
-///   AppWindow (bu script + CanvasGroup)
-///   ├── TitleBar (Image) ← sürükleme alanı
-///   │   ├── TitleText (TMP)
-///   │   ├── FullscreenButton (Button)
-///   │   └── CloseButton (Button)
-///   └── Content (istediğin UI buraya)
-/// </summary>
 [RequireComponent(typeof(RectTransform), typeof(CanvasGroup))]
 public class AppWindow : MonoBehaviour, IPointerDownHandler
 {
