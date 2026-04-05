@@ -21,6 +21,7 @@ public class HUDController : MonoBehaviour
     
     private PlayerInteraction interaction;
     private PlayerItemHolder holder;
+    private IInteractable lastDetectedInteractable;
     
     private void OnEnable()
     {
@@ -69,10 +70,15 @@ public class HUDController : MonoBehaviour
         }
         else if (interaction.DetectedInteractable != null)
         {
-            SetText(interactionHintText, true, $"<b>E: </b> {interaction.DetectedInteractable.InteractHint}");
+            if (lastDetectedInteractable != interaction.DetectedInteractable)
+            {
+                lastDetectedInteractable = interaction.DetectedInteractable;
+                UpdateInteractionHint();
+            }
         }
         else
         {
+            lastDetectedInteractable = null;
             SetText(interactionHintText, false);
         }
 
@@ -95,6 +101,15 @@ public class HUDController : MonoBehaviour
             SetText(dropHintText, false);
         }
     }
+    private void UpdateInteractionHint()
+    {
+        if (lastDetectedInteractable == null) return;
+
+        // LocalizedString'in asıl çevrilmiş metnini çekiyoruz
+        string translatedHint = lastDetectedInteractable.InteractHint.GetLocalizedString();
+        SetText(interactionHintText, true, $"<b>E: </b> {translatedHint}");
+    }
+    
     
     private void SetText(TextMeshProUGUI tmp, bool active, string text="")
     {

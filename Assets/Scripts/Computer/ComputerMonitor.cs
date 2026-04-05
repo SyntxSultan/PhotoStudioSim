@@ -1,13 +1,12 @@
 using UnityEngine;
 using Unity.Cinemachine;
 using UnityEngine.InputSystem;
+using UnityEngine.Localization;
 
 public class ComputerMonitor : MonoBehaviour, IInteractable
 {
+    [SerializeField] private LocalizedString interactHint;
     [SerializeField] private CinemachineCamera seatCamera;
-
-    public string InteractHint => "Bilgisayara Otur";
-
     
     private void Start()
     {
@@ -28,6 +27,7 @@ public class ComputerMonitor : MonoBehaviour, IInteractable
     
 
     // ── IInteractable ────────────────────────────────────────────
+    public LocalizedString InteractHint =>  interactHint;
 
     public void Interact()
     {

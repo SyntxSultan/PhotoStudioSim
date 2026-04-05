@@ -1,9 +1,10 @@
-﻿using System.Collections;
-using UnityEngine;
+﻿using UnityEngine;
+using UnityEngine.Localization;
 
 public class ComputerCase : MonoBehaviour, IInteractable
 {
-    public string InteractHint => "Bilgisayarı Aç/Kapat";
+    [SerializeField] private LocalizedString interactHint;
+    public LocalizedString InteractHint => interactHint;
 
     public void Interact()
     {

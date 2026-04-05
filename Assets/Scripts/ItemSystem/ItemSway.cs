@@ -49,7 +49,7 @@ public class ItemSway : MonoBehaviour
         UpdateSway(isSprinting, isCrouching, isMoving);
     }
 
-    public void UpdateSway(bool isSprinting, bool isCrouching, bool isMoving)
+    private void UpdateSway(bool isSprinting, bool isCrouching, bool isMoving)
     {
         float deltaTime = Time.deltaTime;
 
@@ -79,12 +79,6 @@ public class ItemSway : MonoBehaviour
                 initialPosition.x + Mathf.Sin(positionTimerX) * currentMovementSwayMagnitudeX, 
                 initialPosition.y + Mathf.Sin(positionTimerY) * currentMovementSwayMagnitudeY, 
                 transform.localPosition.z);
-        }
-        else
-        {
-            transform.localPosition = Vector3.Lerp(transform.localPosition, initialPosition, 2f * deltaTime);
-            positionTimerY = 0f;
-            positionTimerX = 0f;
         }
     }
 }

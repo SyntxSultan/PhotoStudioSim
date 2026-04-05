@@ -8,23 +8,32 @@ public class GalleryApp : AppWindow
     [Header("Galeri UI")]
     [SerializeField] private Transform thumbnailGrid;
     [SerializeField] private GameObject thumbnailPrefab;
+    [SerializeField] private TextMeshProUGUI emptyLabel;
 
-    [Header("Önizleme")]
+    [Header("Preview Panel")]
     [SerializeField] private GameObject previewPanel;
     [SerializeField] private RawImage previewImage;
     [SerializeField] private Button prevButton;
     [SerializeField] private Button nextButton;
     [SerializeField] private TextMeshProUGUI indexText;
+    [SerializeField] private Button printButton;
 
-    [Header("Boş Durum")]
-    [SerializeField] private TextMeshProUGUI emptyLabel;
+    [Header("Printing")] 
+    [SerializeField] private PrintPopup printPopup;
 
     private List<Texture2D> photos = new();
     private int currentIndex = -1;
 
+    protected override void Awake()
+    {
+        base.Awake();
+        previewPanel.SetActive(false);
+        printPopup.gameObject.SetActive(false);
+    }
+
     protected override void Start()
     {
-        previewPanel.SetActive(false);
+        printPopup.OnPrint +=  StartPrinting;
     }
 
     protected override void OnOpened()
@@ -32,6 +41,7 @@ public class GalleryApp : AppWindow
         previewPanel.SetActive(false);
         prevButton?.onClick.AddListener(ShowPrev);
         nextButton?.onClick.AddListener(ShowNext);
+        printButton?.onClick.AddListener(PrintButtonClicked);
 
         CameraStorage.Instance.OnPhotosChanged += RefreshGallery;
         RefreshGallery();
@@ -87,6 +97,26 @@ public class GalleryApp : AppWindow
 
     private void ShowPrev() => ShowPhoto(currentIndex - 1);
     private void ShowNext() => ShowPhoto(currentIndex + 1);
+    
+    private void PrintButtonClicked()
+    {
+        printPopup.gameObject.SetActive(true);
+        printPopup.SetPreviewImage(photos[currentIndex]);
+    }
+
+    private void StartPrinting(PrintSettings settings)
+    {
+        if (settings.targetPrinter == null)
+        {
+            Debug.LogError("Yazıcı seçilmedi veya ağda yazıcı yok!");
+            return;
+        }
+
+        Debug.Log($"Yazdırılan Cihaz: {settings.targetPrinter.NetworkDeviceName}");
+        Debug.Log($"Kağıt Boyutu: {settings.paperSize}");
+        Debug.Log($"Yönlendirme: {settings.paperOrientation}");
+        Debug.Log($"Sığdırma: {settings.paperFit}");
+    }
 
     private void UpdateNavBar()
     {
