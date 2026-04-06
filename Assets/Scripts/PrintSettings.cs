@@ -19,10 +19,20 @@ public enum PrintPaperFit
     ActualSize
 }
 
+public enum PrintQuality
+{
+    Low = 0,
+    Average = 1,
+    High = 2,
+    UltraHigh = 3
+}
+
 public struct PrintSettings
 {
-    public NetworkDeviceSO targetPrinter;
+    public INetworkDevice targetPrinter;
     public PrintPaperSize paperSize;
     public PrintPaperOrientation paperOrientation;
     public PrintPaperFit paperFit;
+    public bool isColored;
+    public PrintQuality quality;
 }

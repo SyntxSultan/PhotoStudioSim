@@ -11,13 +11,16 @@ public class PrintPopup : MonoBehaviour
     [SerializeField] private TMP_Dropdown paperSizeSelectDropdown;
     [SerializeField] private TMP_Dropdown orientationSelectDropdown;
     [SerializeField] private TMP_Dropdown fitSelectDropdown;
+    [SerializeField] private TMP_Dropdown colorModeDropdown;
+    [SerializeField] private TMP_Dropdown qualityDropdown;
     [SerializeField] private RawImage printingImagePrewiev;
     [SerializeField] private Button printButton;
     [SerializeField] private Button cancelButton;
     
     public event Action<PrintSettings> OnPrint;
     
-    private List<NetworkDeviceSO> availablePrinters = new List<NetworkDeviceSO>();
+    private List<INetworkDevice> availablePrinters = new List<INetworkDevice>();
+    private List<PrintQuality> availableQualities = new();
 
     private void Awake()
     {
@@ -47,9 +50,53 @@ public class PrintPopup : MonoBehaviour
         }
 
         printButton.interactable = true;
-        List<string> printerNames = availablePrinters.Select(p => p.NetworkDeviceName).ToList();
+        List<string> printerNames = availablePrinters.Select(p => p.GetNetworkDeviceData().NetworkDeviceName).ToList();
         printerSelectDropdown.AddOptions(printerNames);
+        RefreshQualityDropdown(); 
     }
+    
+    /// <summary>
+    /// Seçili yazıcının MaxSupportedQuality'sine göre quality dropdown'ını filtreler.
+    /// Yazıcı değiştiğinde veya liste yenilendiğinde çağrılmalı.
+    /// </summary>
+    private void RefreshQualityDropdown()
+    {
+        PrintQuality maxQuality = PrintQuality.UltraHigh;
+
+        if (availablePrinters.Count > 0 && printerSelectDropdown.value < availablePrinters.Count)
+        {
+            if (availablePrinters[printerSelectDropdown.value] is ItemPaperPrinter printer)
+                maxQuality = printer.GetMaxSupportedQuality();
+        }
+
+        availableQualities.Clear();
+        qualityDropdown.ClearOptions();
+        var options = new List<string>();
+
+        foreach (PrintQuality quality in Enum.GetValues(typeof(PrintQuality)))
+        {
+            if (quality <= maxQuality)
+            {
+                availableQualities.Add(quality);
+                options.Add(GetQualityDisplayName(quality));
+            }
+        }
+
+        qualityDropdown.AddOptions(options);
+        // Mevcut seçimi en yüksekte bırak
+        qualityDropdown.value = options.Count - 1;
+    }
+
+    private void OnPrinterSelectionChanged(int _) => RefreshQualityDropdown();
+
+    private string GetQualityDisplayName(PrintQuality q) => q switch
+    {
+        PrintQuality.Low      => "Düşük Kalite",
+        PrintQuality.Average  => "Ortalama Kalite",
+        PrintQuality.High     => "Yüksek Kalite",
+        PrintQuality.UltraHigh => "Ultra Yüksek Kalite",
+        _                     => q.ToString()
+    };
 
     public void SetPreviewImage(Texture2D texture)
     {
@@ -64,24 +111,29 @@ public class PrintPopup : MonoBehaviour
 
     private PrintSettings GeneratePrintSettings()
     {
-        NetworkDeviceSO selectedPrinter = null;
+        INetworkDevice selectedPrinter = null;
         if (availablePrinters.Count > 0)
         {
             selectedPrinter = availablePrinters[printerSelectDropdown.value];
         }
         
-        PrintSettings printSettings = new PrintSettings
+        PrintQuality selectedQuality = availableQualities.Count > 0
+            ? availableQualities[Mathf.Clamp(qualityDropdown.value, 0, availableQualities.Count - 1)]
+            : PrintQuality.Low;
+        
+        return new PrintSettings 
         {
             targetPrinter = selectedPrinter,
             paperSize = ParseDropdownValue<PrintPaperSize>(paperSizeSelectDropdown),
             paperOrientation = ParseDropdownValue<PrintPaperOrientation>(orientationSelectDropdown),
-            paperFit = ParseDropdownValue<PrintPaperFit>(fitSelectDropdown)
+            paperFit = ParseDropdownValue<PrintPaperFit>(fitSelectDropdown),
+            isColored        = colorModeDropdown.value == 1, // 0=SB, 1=Renkli
+            quality          = selectedQuality
         };
-
-        return printSettings;
     }
 
-    // Helper: Dropdown değerini verilen Enum tipine çevirir
+    // --------Helpers---------
+    
     private T ParseDropdownValue<T>(TMPro.TMP_Dropdown dropdown) where T : struct
     {
         if (Enum.TryParse(dropdown.value.ToString(), out T result))

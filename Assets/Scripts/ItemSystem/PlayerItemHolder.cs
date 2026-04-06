@@ -1,5 +1,5 @@
-using System;
 using UnityEngine;
+using UnityEngine.Localization;
 
 /// <summary>
 /// Oyuncunun elindeki itemi yönetir.
@@ -70,14 +70,12 @@ public class PlayerItemHolder : MonoBehaviour
     {
         if (!IsHoldingItem || currentUsable == null) return;
 
-        // Sol tık basıldı → kullanımı başlat
         if (InputManager.Instance.GetUseInputDown() && !isUsingItem)
         {
             isUsingItem = true;
             currentUsable.OnUseStart();
         }
 
-        // Sol tık bırakıldı → kullanımı durdur
         if (InputManager.Instance.GetUseInputUp() && isUsingItem)
         {
             isUsingItem = false;
@@ -129,5 +127,5 @@ public class PlayerItemHolder : MonoBehaviour
         currentUsable = null;
     }
 
-    public string GetUseHint() => currentUsable?.UseHint ?? string.Empty;
+    public LocalizedString GetUseHint() => currentUsable?.UseHint;
 }

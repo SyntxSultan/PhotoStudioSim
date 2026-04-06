@@ -86,7 +86,7 @@ public class HUDController : MonoBehaviour
         {
             //SetText(heldItemNameText, true, holder.GetHeldItemName());
 
-            string useHint = holder.GetUseHint();
+            string useHint = holder.GetUseHint()?.GetLocalizedString();
             if (!string.IsNullOrEmpty(useHint))
                 SetText(useHintText, true, useHint);
             else

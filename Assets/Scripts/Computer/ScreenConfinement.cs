@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+using MoreMountains.Tools;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.LowLevel;
@@ -41,11 +43,13 @@ public class ScreenConfinement : MonoBehaviour
     private void Start()
     {
         SubscribeToComputerEvents();
-        SetMonitorState(false);
+        SetMonitorPowerState(false);
     }
 
     private void Update()
     {
+        MMDebug.DebugOnScreen(Cursor.lockState.ToString());
+        MMDebug.DebugOnScreen(Cursor.visible.ToString());
         if (!ComputerState.Instance.IsPlayerSit) return;
 
         HandleSessionActivation();
@@ -94,10 +98,10 @@ public class ScreenConfinement : MonoBehaviour
 
     #region Computer State Handlers
 
-    private void OnPowerOn() => SetMonitorState(true);
-    private void OnPowerOut() => SetMonitorState(false);
+    private void OnPowerOn() => SetMonitorPowerState(true);
+    private void OnPowerOut() => SetMonitorPowerState(false);
 
-    private void SetMonitorState(bool state)
+    private void SetMonitorPowerState(bool state)
     {
         if (monitorPanel != null)
         {
@@ -158,8 +162,19 @@ public class ScreenConfinement : MonoBehaviour
         if (physicalMouse == null) return;
 
         virtualMouse = InputSystem.AddDevice<Mouse>("VirtualMouse");
-
         inputModule.pointerBehavior = UIPointerBehavior.AllPointersAsIs;
+
+        // ÇÖZÜM 1: Yeni cihazı tanıtmak için eylem haritasını kapatıp açıyoruz.
+        if (inputModule.actionsAsset != null)
+        {
+            inputModule.actionsAsset.Disable(); // Önce kapat
+
+            var allowedDevices = new System.Collections.Generic.List<InputDevice> { virtualMouse };
+            if (Keyboard.current != null) allowedDevices.Add(Keyboard.current);
+            inputModule.actionsAsset.devices = allowedDevices.ToArray();
+
+            inputModule.actionsAsset.Enable(); // Atama sonrası tekrar aç
+        }
 
         UpdateDeviceState();
 
@@ -167,6 +182,23 @@ public class ScreenConfinement : MonoBehaviour
         {
             virtualCursor.gameObject.SetActive(true);
             SyncCursorGraphic();
+        }
+    }
+
+    private void RemoveVirtualMouse()
+    {
+        // Temizlik yaparken de aynı kapat/aç mantığını uyguluyoruz.
+        if (inputModule != null && inputModule.actionsAsset != null)
+        {
+            inputModule.actionsAsset.Disable();
+            inputModule.actionsAsset.devices = null; 
+            inputModule.actionsAsset.Enable();
+        }
+
+        if (virtualMouse != null)
+        {
+            InputSystem.RemoveDevice(virtualMouse);
+            virtualMouse = null;
         }
     }
 
@@ -234,15 +266,15 @@ public class ScreenConfinement : MonoBehaviour
 
         Vector2 screenPos = renderCamera.WorldToScreenPoint(GetWorldPosition());
 
-        // Fiziksel farenin o anki tuş durumlarını alıyoruz (basılı tutuluyorsa 1, tutulmuyorsa 0)
         ushort buttonsState = 0;
         if (physicalMouse.leftButton.isPressed) buttonsState |= 1 << 0;
         if (physicalMouse.rightButton.isPressed) buttonsState |= 1 << 1;
         if (physicalMouse.middleButton.isPressed) buttonsState |= 1 << 2;
 
-        // Hem yeni pozisyonu hem de tuşların basılı tutulma durumunu tek seferde gönderiyoruz.
-        // Böylece sürükleme (dragging) işlemi kesintiye uğramaz.
-        InputState.Change(virtualMouse, new MouseState 
+        // ÇÖZÜM 2: InputState.Change yerine QueueStateEvent kullanıyoruz.
+        // Bu sayede UI Action'ları tetiklenir ve hover/click işlemleri gerçekleşir.
+        // Hem pozisyon hem buton durumu tek seferde iletildiği için slider dragging de bozulmadan çalışacaktır.
+        InputSystem.QueueStateEvent(virtualMouse, new MouseState 
         { 
             position = screenPos,
             buttons = buttonsState
@@ -251,20 +283,10 @@ public class ScreenConfinement : MonoBehaviour
 
     #endregion
 
-    #region Utility
 
     private Vector3 GetWorldPosition()
     {
         return monitorPanel.TransformPoint(new Vector3(localPos.x, localPos.y, 0f));
-    }
-
-    private void RemoveVirtualMouse()
-    {
-        if (virtualMouse != null)
-        {
-            InputSystem.RemoveDevice(virtualMouse);
-            virtualMouse = null;
-        }
     }
 
     public void CenterCursor()
@@ -276,6 +298,4 @@ public class ScreenConfinement : MonoBehaviour
             UpdateDeviceState();
         }
     }
-
-    #endregion
 }

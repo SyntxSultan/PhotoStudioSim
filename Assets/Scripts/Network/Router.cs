@@ -5,10 +5,10 @@ using UnityEngine;
 
 public class NetworkDevicesChangedEventArgs : EventArgs
 {
-    public readonly List<NetworkDeviceSO> connectedDevices = new List<NetworkDeviceSO>();
-    public NetworkDeviceSO changedDevice;
+    public readonly List<INetworkDevice> connectedDevices;
+    public readonly INetworkDevice changedDevice;
 
-    public NetworkDevicesChangedEventArgs(List<NetworkDeviceSO> connectedDevices,  NetworkDeviceSO changedDevice)
+    public NetworkDevicesChangedEventArgs(List<INetworkDevice> connectedDevices,  INetworkDevice changedDevice)
     {
         this.connectedDevices = connectedDevices;
         this.changedDevice = changedDevice;
@@ -21,7 +21,7 @@ public class Router : MonoBehaviour
     
     public event EventHandler<NetworkDevicesChangedEventArgs> OnNetworkDevicesChanged;
     
-    private HashSet<NetworkDeviceSO> connectedDevices =  new HashSet<NetworkDeviceSO>();
+    private HashSet<INetworkDevice> connectedDevices =  new HashSet<INetworkDevice>();
 
     private void Awake()
     {
@@ -33,25 +33,33 @@ public class Router : MonoBehaviour
         Instance = this;
     }
 
-    public void Connect(NetworkDeviceSO device)
+    public void Connect(INetworkDevice device)
     {
         connectedDevices.Add(device);
         OnNetworkDevicesChanged?.Invoke(this, new NetworkDevicesChangedEventArgs(connectedDevices.ToList(), device));
     }
 
-    public void Disconnect(NetworkDeviceSO device)
+    public void Disconnect(INetworkDevice device)
     {
         if (!connectedDevices.Contains(device))
         {
-            Debug.LogError($"{device.name} is not connected");
+            Debug.LogError($"{device.GetNetworkDeviceData().NetworkDeviceName} is not connected");
             return;
         }
         connectedDevices.Remove(device);
         OnNetworkDevicesChanged?.Invoke(this, new NetworkDevicesChangedEventArgs(connectedDevices.ToList(), device));
     }
 
-    public List<NetworkDeviceSO> GetDevicesByType(NetworkDeviceType deviceType)
+    public List<INetworkDevice> GetDevicesByType(NetworkDeviceType deviceType)
     {
-        return connectedDevices.Where(device => device.NetworkDeviceType == deviceType).ToList();
+        return connectedDevices.Where(device => device.GetNetworkDeviceData().NetworkDeviceType == deviceType).ToList();
+    }
+
+    public T GetNetworkDeviceComponent<T>(INetworkDevice device) where T : Component
+    {
+        if (device is Component component)
+            return component.GetComponent<T>();
+
+        return null;
     }
 }

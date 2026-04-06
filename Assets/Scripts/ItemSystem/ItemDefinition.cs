@@ -18,12 +18,14 @@ public class ItemDefinition : ScriptableObject
     public int currencyValue = 1;
     
     [NaughtyAttributes.EnableIf("type", ItemType.Pickable)]
-    [Header("UI")]
+    [Header("Kullanım")]
+    public bool isUseable = false;
+    
+    [NaughtyAttributes.EnableIf("isUseable")]
     [Tooltip("Item elde tutulurken gösterilecek kullanım ipucu. Boş bırakılırsa gösterilmez.")]
     public string useHint;
     
-    [NaughtyAttributes.EnableIf("type", ItemType.Pickable)]
-    [Header("Kullanım (sadece Usable için)")]
+    [NaughtyAttributes.EnableIf("isUseable")]
     public UseEffect effect;
     
     [NaughtyAttributes.EnableIf("type", ItemType.Pickable)]

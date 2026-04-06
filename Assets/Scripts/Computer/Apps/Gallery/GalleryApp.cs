@@ -111,11 +111,13 @@ public class GalleryApp : AppWindow
             Debug.LogError("Yazıcı seçilmedi veya ağda yazıcı yok!");
             return;
         }
-
-        Debug.Log($"Yazdırılan Cihaz: {settings.targetPrinter.NetworkDeviceName}");
-        Debug.Log($"Kağıt Boyutu: {settings.paperSize}");
-        Debug.Log($"Yönlendirme: {settings.paperOrientation}");
-        Debug.Log($"Sığdırma: {settings.paperFit}");
+        
+        if (Router.Instance.GetNetworkDeviceComponent<ItemPaperPrinter>(settings.targetPrinter) is { } printer)
+        {
+            printer.PrintDocument(settings, photos[currentIndex]);
+        }
+        
+        printPopup.gameObject.SetActive(false);
     }
 
     private void UpdateNavBar()

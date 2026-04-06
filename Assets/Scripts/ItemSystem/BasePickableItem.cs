@@ -36,6 +36,7 @@ public abstract class BasePickableItem : MonoBehaviour, IPickable
     {
         Rb = GetComponent<Rigidbody>();
         colliders = GetComponentsInChildren<Collider>(true);
+        gameObject.layer = LayerMask.NameToLayer("Interactable");
     }
 
     // ─────────────────────────────────────────────────────────────
@@ -56,8 +57,7 @@ public abstract class BasePickableItem : MonoBehaviour, IPickable
         Rb.angularVelocity = Vector3.zero;
         Rb.isKinematic = true;
 
-        foreach (var col in colliders)
-            col.enabled = false;
+        SetCollidersActive(false);
 
         // Join holdpoint
         transform.SetParent(holdPoint);
@@ -77,14 +77,19 @@ public abstract class BasePickableItem : MonoBehaviour, IPickable
         // Enable Physics
         Rb.isKinematic = false;
 
-        foreach (var col in colliders)
-            col.enabled = true;
-
+        SetCollidersActive(true);
+            
         // Apply throw force
         if (throwForce > 0f)
             Rb.AddForce(throwDirection * throwForce * throwForceMultiplier, ForceMode.Impulse);
 
         OnDropped(); 
+    }
+
+    protected void SetCollidersActive(bool active)
+    {
+        foreach (var col in colliders)
+            col.enabled = active;
     }
 
     /// <summary>Item eline alındıktan hemen sonra çağrılır.</summary>

@@ -4,10 +4,12 @@ using DG.Tweening;
 using MoreMountains.Feedbacks;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.Localization;
 
 public class ItemCamera : BasePickableItem, IUsable
 {
-    public string UseHint => "Fotoğraf Çek";
+    [SerializeField] private LocalizedString useHint;
+    public LocalizedString UseHint => useHint;
     
     [SerializeField] private Canvas screenCanvas;
     
