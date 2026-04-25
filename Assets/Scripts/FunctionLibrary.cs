@@ -9,4 +9,22 @@ public static class FunctionLibrary
             MonoBehaviour.Destroy(child.gameObject);
         }
     }
+
+    public static void SetStars(RectTransform starsContainer, int starCount, GameObject starPrefab, GameObject emptyStarPrefab)
+    {
+        DestroyChildren(starsContainer);
+
+        foreach (Transform child in starsContainer.transform)
+        {
+            MonoBehaviour.Destroy(child.gameObject);
+        }
+        for (int i = 0; i < starCount; i++)
+        {
+            MonoBehaviour.Instantiate(starPrefab, starsContainer.transform);
+        }
+        for (int i = 0; i < 5 - starCount; i++)
+        {
+            MonoBehaviour.Instantiate(emptyStarPrefab, starsContainer.transform);
+        }
+    }
 }

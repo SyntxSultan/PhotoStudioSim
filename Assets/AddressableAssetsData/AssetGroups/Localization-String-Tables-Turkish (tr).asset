@@ -39,6 +39,12 @@ MonoBehaviour:
     m_SerializedLabels:
     - Locale-tr
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: a444ef51bf9dfcc4da4f843a20b3cd1a
+    m_Address: Reviews_tr
+    m_ReadOnly: 1
+    m_SerializedLabels:
+    - Locale-tr
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: d5302a800a5e6c741a473dd1cea446f1
     m_Address: HUD_tr
     m_ReadOnly: 1

@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using UnityEngine.Localization;
 
@@ -128,4 +129,23 @@ public class PlayerItemHolder : MonoBehaviour
     }
 
     public LocalizedString GetUseHint() => currentUsable?.UseHint;
+
+    public void ClearCurrentItem()
+    {
+        if (currentItem == null) return;
+
+        if (isUsingItem)
+        {
+            currentUsable?.OnUseStop();
+            isUsingItem = false;
+        }
+
+        if (currentItem is MonoBehaviour monoBehaviour)
+        {
+            Destroy(monoBehaviour.gameObject);
+        }
+
+        currentItem = null;
+        currentUsable = null;
+    }
 }

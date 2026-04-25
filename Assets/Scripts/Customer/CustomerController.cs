@@ -14,21 +14,18 @@ public class CustomerController : MonoBehaviour, IInteractable
         && !serviceCompleted;
 
     
-    [Header("Movement")]
     [SerializeField] private NavMeshAgent navMeshAgent;
     [SerializeField] private float destinationTolerance = 0.25f;
     [SerializeField] private Animator controller;
 
-    [Header("Flow Targets")]
-    [SerializeField] private Transform entranceTarget;
-    [SerializeField] private Transform exitTarget;
+    private Transform entranceTarget;
+    private Transform exitTarget;
 
-    [Header("Dependencies")]
-    [SerializeField] private QueueManager queueManager;
-    [SerializeField] private ServiceTableManager serviceTableManager;
-    [SerializeField] private OrderManager orderManager;
-    [SerializeField] private ShopRatingManager shopRatingManager;
-    [SerializeField] private OrderGenerator orderGenerator;
+    private QueueManager queueManager;
+    private ServiceTableManager serviceTableManager;
+    private OrderManager orderManager;
+    private ShopRatingManager shopRatingManager;
+    private OrderGenerator orderGenerator;
 
     private CustomerStateMachine stateMachine;
     private ServiceTable reservedServiceTable;
@@ -145,6 +142,7 @@ public class CustomerController : MonoBehaviour, IInteractable
         CustomerData.OrderResult = orderResult;
         CustomerData.ServiceCompletedAt = Time.time;
         orderManager?.CompleteOrder(orderResult);
+
         OnServiceCompleted?.Invoke(this, orderResult);
         Debug.Log($"CustomerController: Service completed for customer {name} with result: Accuracy {orderResult.AccuracyScore}, Quality {orderResult.MaterialQualityScore}", this);
 
@@ -162,6 +160,8 @@ public class CustomerController : MonoBehaviour, IInteractable
             OnRatingSubmitted?.Invoke(this, rating);
             Debug.Log($"CustomerController: Submitted rating {rating} for customer {name}", this);
         }
+
+        PlayerItemHolder.Instance?.ClearCurrentItem();
     }
 
     public void BeginExit()

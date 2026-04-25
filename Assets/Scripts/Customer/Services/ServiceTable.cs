@@ -64,8 +64,8 @@ public class ServiceTable : MonoBehaviour, IServiceTable
         }
 
         // Get envelope from player and verify papers
-        float accuracyScore = 0f;
-        float materialQualityScore = 0f;
+        float accuracyScore;
+        float materialQualityScore;
 
         if (PlayerItemHolder.Instance?.CurrentItem is ItemEnvelope envelope)
         {
@@ -74,32 +74,25 @@ public class ServiceTable : MonoBehaviour, IServiceTable
 
             if (totalPapers > 0)
             {
-                int matchingPapers = 0;
+                float totalAccuracy = 0f;
 
                 foreach (var storedPhoto in envelope.StoredPhotos)
                 {
-                    if (ComparePrintSettings(storedPhoto.settings, expectedSettings))
-                    {
-                        matchingPapers++;
-                    }
+                    totalAccuracy += ComparePrintSettingsNormalized(storedPhoto.settings, expectedSettings);
                 }
 
-                // Accuracy: percentage of papers matching the order
-                accuracyScore = (float)matchingPapers / totalPapers;
+                accuracyScore = totalAccuracy / totalPapers;
 
-                // Material quality: based on print quality setting
                 materialQualityScore = GetQualityScore(expectedSettings.quality);
             }
             else
             {
-                // No papers in envelope = 0 score
                 accuracyScore = 0f;
                 materialQualityScore = 0f;
             }
         }
         else
         {
-            // No envelope = 0 score
             accuracyScore = 0f;
             materialQualityScore = 0f;
         }
@@ -107,7 +100,6 @@ public class ServiceTable : MonoBehaviour, IServiceTable
         var result = new OrderResult
         {
             OrderId = currentOrder.OrderId,
-            CompletedSuccessfully = accuracyScore > 0f,
             AccuracyScore = accuracyScore,
             MaterialQualityScore = materialQualityScore,
             CompletedAt = Time.time
@@ -119,13 +111,15 @@ public class ServiceTable : MonoBehaviour, IServiceTable
         Release();
     }
 
-    private bool ComparePrintSettings(PrintSettings actual, PrintSettings expected)
+    private float ComparePrintSettingsNormalized(PrintSettings actual, PrintSettings expected)
     {
-        return actual.paperSize == expected.paperSize
-            && actual.paperOrientation == expected.paperOrientation
-            && actual.paperFit == expected.paperFit
-            && actual.isColored == expected.isColored
-            && actual.quality == expected.quality;
+        float score = 0f;
+        if (actual.paperSize == expected.paperSize) score += 1f;
+        if (actual.paperOrientation == expected.paperOrientation) score += 1f;
+        if (actual.paperFit == expected.paperFit) score += 1f;
+        if (actual.isColored == expected.isColored) score += 1f;
+        if (actual.quality == expected.quality) score += 1f;
+        return score / 5f;
     }
 
     private float GetQualityScore(PrintQuality quality)
@@ -136,7 +130,7 @@ public class ServiceTable : MonoBehaviour, IServiceTable
             PrintQuality.Average => 0.65f,
             PrintQuality.High => 0.8f,
             PrintQuality.UltraHigh => 1f,
-            _ => 0.5f
+            _ => 0f
         };
     }
 }
