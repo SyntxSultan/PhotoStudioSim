@@ -16,7 +16,7 @@ MonoBehaviour:
   m_TableCollectionNameGuidString: 1f2954b52d092b1469ebbd268af8ca4e
   m_Entries:
   - m_Id: 1806084668248064
-    m_Key: settings
+    m_Key: ui.settings
     m_Metadata:
       m_Items: []
   m_Metadata:

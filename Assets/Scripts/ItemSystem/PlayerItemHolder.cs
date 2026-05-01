@@ -2,7 +2,6 @@ using System;
 using UnityEngine;
 using UnityEngine.Localization;
 
-/// <summary>
 /// Oyuncunun elindeki itemi yönetir.
 /// 
 /// SORUMLULUKLAR:
@@ -14,26 +13,23 @@ using UnityEngine.Localization;
 ///   1) Bu script oyuncu kamerasının (veya Player objesinin) üzerine koy
 ///   2) HoldPoint: Kameranın biraz önünde ve aşağısında boş bir Transform oluştur,
 ///      buraya sürükle (örn. Camera/HoldPoint)
-/// </summary>
+
 public class PlayerItemHolder : MonoBehaviour
 {
     public static PlayerItemHolder Instance { get; private set; }
 
+    public event Action<bool, BasePickableItem> OnHeldItemChanged;
+
     [SerializeField] private ItemSway itemSway;
 
-    [Header("Hold Point")]
-    [Tooltip("Item'ın elde tutulacağı boş Transform (kamera çocuğu).")]
     [SerializeField] private Transform holdPoint;
-
-    [Header("Bırakma / Fırlatma")]
-    [Tooltip("G tuşuna basınca uygulanan ileri kuvvet.")]
     [SerializeField] private float dropForce = 2f;
 
     public bool IsHoldingItem => currentItem != null;
+    public BasePickableItem CurrentItem => currentItem;
+    public LocalizedString GetUseHint() => currentUsable.UseHint;
 
-    public IPickable CurrentItem => currentItem;
-
-    private IPickable currentItem;
+    private BasePickableItem currentItem;
     private IUsable currentUsable;
     private bool isUsingItem;
     private Camera mainCamera;
@@ -63,8 +59,7 @@ public class PlayerItemHolder : MonoBehaviour
     {
         if (!IsHoldingItem) return;
 
-        if (InputManager.Instance.DropKeyPressed())
-            Drop();
+        if (InputManager.Instance.DropKeyPressed()) Drop();
     }
 
     private void HandleUseInput()
@@ -88,7 +83,7 @@ public class PlayerItemHolder : MonoBehaviour
     // Public API
     // ─────────────────────────────────────────────────────────────
 
-    public bool TryPickup(IPickable item)
+    public bool TryPickup(BasePickableItem item)
     {
         if (item == null)
         {
@@ -106,6 +101,8 @@ public class PlayerItemHolder : MonoBehaviour
         currentUsable = item as IUsable;
 
         item.OnPickup(holdPoint);
+
+        OnHeldItemChanged?.Invoke(true, currentItem);
 
         return true;
     }
@@ -126,9 +123,8 @@ public class PlayerItemHolder : MonoBehaviour
 
         currentItem = null;
         currentUsable = null;
+        OnHeldItemChanged?.Invoke(false, null);
     }
-
-    public LocalizedString GetUseHint() => currentUsable?.UseHint;
 
     public void ClearCurrentItem()
     {
@@ -147,5 +143,6 @@ public class PlayerItemHolder : MonoBehaviour
 
         currentItem = null;
         currentUsable = null;
+        OnHeldItemChanged?.Invoke(false, null);
     }
 }

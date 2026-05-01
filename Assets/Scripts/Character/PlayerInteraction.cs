@@ -23,11 +23,11 @@ public class PlayerInteraction : MonoBehaviour
     
     //---------Public API-----------
     
-    public IPickable DetectedPickable { get; private set; }
+    public BasePickableItem DetectedPickable { get; private set; }
     public IInteractable DetectedInteractable { get; private set; }
     public bool HasDetection => DetectedPickable != null || DetectedInteractable != null;
     public event Action<bool> OnShouldCheckInteractionStateChanged;
-    public event Action<IPickable, IInteractable> OnDetectionChanged;
+    public event Action<BasePickableItem, IInteractable> OnDetectionChanged;
     
     private void Awake()
     {
@@ -85,7 +85,7 @@ public class PlayerInteraction : MonoBehaviour
 
                 if (!PlayerItemHolder.Instance.IsHoldingItem)
                 {
-                    hitCol.TryGetComponent(out IPickable detectedPick);
+                    hitCol.TryGetComponent(out BasePickableItem detectedPick);
                     DetectedPickable = detectedPick;
                 }
 

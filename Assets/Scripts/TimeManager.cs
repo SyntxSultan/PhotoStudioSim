@@ -17,6 +17,7 @@ public class TimeManager : MonoBehaviour
     [SerializeField, Range(0f, 24f)] private float sunsetHour = 18f; // Günbatımı
     [SerializeField] private float transitionDuration = 1f; // Güneşin doğuş/batış geçiş süresi (oyun içi saat olarak)
     [SerializeField] private float nightSunIntensity = 0.1f; // Gece güneş/ay ışığı gücü
+    [SerializeField] private float daySunIntensity = 3f; // Gündüz güneş ışığı gücü
 
     // Public Properties
     public int CurrentDay { get; private set; } = 1;
@@ -76,18 +77,18 @@ public class TimeManager : MonoBehaviour
         {
             // Gündoğumu geçişi
             float t = (CurrentTimeOfDay - sunriseHour) / transitionDuration;
-            SunIntensity = Mathf.Lerp(nightSunIntensity, 1f, t);
+            SunIntensity = Mathf.Lerp(nightSunIntensity, daySunIntensity, t);
         }
         else if (CurrentTimeOfDay >= sunsetHour - transitionDuration && CurrentTimeOfDay < sunsetHour)
         {
             // Günbatımı geçişi
             float t = (CurrentTimeOfDay - (sunsetHour - transitionDuration)) / transitionDuration;
-            SunIntensity = Mathf.Lerp(1f, nightSunIntensity, t);
+            SunIntensity = Mathf.Lerp(daySunIntensity, nightSunIntensity, t);
         }
         else if (IsDay)
         {
             // Tam öğlen
-            SunIntensity = 3f;
+            SunIntensity = daySunIntensity;
         }
         else
         {

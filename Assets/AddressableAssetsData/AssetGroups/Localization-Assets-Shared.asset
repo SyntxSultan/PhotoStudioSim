@@ -35,6 +35,11 @@ MonoBehaviour:
     m_ReadOnly: 1
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 4b7f5c90c5a4b0742bb4d5a1369a6b2d
+    m_Address: Assets/Localization/Computer Shared Data.asset
+    m_ReadOnly: 1
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 597e0ad3f69743d459ceb0655f8bcc9b
     m_Address: Assets/Localization/Interactions Shared Data.asset
     m_ReadOnly: 1

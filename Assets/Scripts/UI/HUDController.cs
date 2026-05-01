@@ -1,3 +1,5 @@
+using System;
+using System.Runtime.InteropServices;
 using MoreMountains.Tools;
 using TMPro;
 using UnityEngine;
@@ -7,22 +9,21 @@ using UnityEngine.Localization;
 public class HUDController : MonoBehaviour
 {
     [SerializeField] private MMDebugMenu debugMenu;
-    
+
     [SerializeField] private TextMeshProUGUI interactionHintText;
     [SerializeField] private TextMeshProUGUI useHintText;
     [SerializeField] private TextMeshProUGUI dropHintText;
     [SerializeField] private TextMeshProUGUI heldItemNameText;
-    
+    [SerializeField] private TextMeshProUGUI timeText;
+    [SerializeField] private TextMeshProUGUI moneyText;
+
+    [Header("Localization")]
     [SerializeField] private LocalizedString localizedPickupHint;
     [SerializeField] private LocalizedString localizedDropHint;
-    
+
     private string cachedPickupHint = "";
     private string cachedDropHint = "";
-    
-    private PlayerInteraction interaction;
-    private PlayerItemHolder holder;
-    private IInteractable lastDetectedInteractable;
-    
+
     private void OnEnable()
     {
         localizedPickupHint.StringChanged += OnPickupHintChanged;
@@ -34,65 +35,68 @@ public class HUDController : MonoBehaviour
         localizedPickupHint.StringChanged -= OnPickupHintChanged;
         localizedDropHint.StringChanged -= OnDropHintChanged;
     }
-    
+
     private void OnDropHintChanged(string value)
     {
         cachedDropHint = value;
     }
-    
+
     private void OnPickupHintChanged(string value)
     {
         cachedPickupHint = value;
     }
-    
+
     private void Start()
     {
-        interaction = PlayerInteraction.Instance;
-        holder = PlayerItemHolder.Instance;
-        
+        CurrencyManager.Instance.OnBalanceChanged += OnBalanceChanged;
+        OnBalanceChanged(CurrencyManager.Instance.GetMoney());
+
+        TimeManager.Instance.OnTimeChanged += OnTimeChanged;
+        OnTimeChanged(TimeManager.Instance.GetHour(), TimeManager.Instance.GetMinute());
+
+        PlayerItemHolder.Instance.OnHeldItemChanged += OnHeldItemChanged;
+
+        PlayerInteraction.Instance.OnDetectionChanged += OnInteractionDetectionChanged;
+
         SetText(interactionHintText, false);
         SetText(useHintText, false);
         SetText(dropHintText, false);
         SetText(heldItemNameText, false);
     }
-    
-    private void Update()
+
+    private void OnInteractionDetectionChanged(BasePickableItem pickableItem, IInteractable interactable)
     {
-        if (Keyboard.current.numpadEnterKey.wasPressedThisFrame)
-        {
-            debugMenu.ToggleMenu();
-            InputManager.ToggleCursorLock();
-        }
-        
-        if (interaction.DetectedPickable != null)
+        if (pickableItem != null)
         {
             SetText(interactionHintText, true, cachedPickupHint);
         }
-        else if (interaction.DetectedInteractable != null)
+        else if (interactable != null)
         {
-            if (lastDetectedInteractable != interaction.DetectedInteractable)
-            {
-                lastDetectedInteractable = interaction.DetectedInteractable;
-                UpdateInteractionHint();
-            }
+            string translatedHint = interactable.InteractHint.GetLocalizedString();
+            SetText(interactionHintText, true, $"<b>E: </b> {translatedHint}");
         }
         else
         {
-            lastDetectedInteractable = null;
             SetText(interactionHintText, false);
         }
+    }
 
-        if (holder.IsHoldingItem)
+    private void OnHeldItemChanged(bool isHoldingItem, BasePickableItem holdingItem)
+    {
+        if (isHoldingItem)
         {
-            //SetText(heldItemNameText, true, holder.GetHeldItemName());
-
-            string useHint = holder.GetUseHint()?.GetLocalizedString();
-            if (!string.IsNullOrEmpty(useHint))
-                SetText(useHintText, true, useHint);
-            else
-                SetText(useHintText, false);
-
+            SetText(heldItemNameText, true, holdingItem.GetItemName());
             SetText(dropHintText, true, cachedDropHint);
+
+            if (holdingItem.IsUseable)
+            {
+                string useHint = PlayerItemHolder.Instance.GetUseHint().GetLocalizedString();
+                SetText(useHintText, true, useHint);
+            }                
+            else
+            {
+                SetText(useHintText, false);
+            }
         }
         else
         {
@@ -101,20 +105,31 @@ public class HUDController : MonoBehaviour
             SetText(dropHintText, false);
         }
     }
-    private void UpdateInteractionHint()
-    {
-        if (lastDetectedInteractable == null) return;
 
-        // LocalizedString'in asıl çevrilmiş metnini çekiyoruz
-        string translatedHint = lastDetectedInteractable.InteractHint.GetLocalizedString();
-        SetText(interactionHintText, true, $"<b>E: </b> {translatedHint}");
+    private void OnTimeChanged(int hour, int minute)
+    {
+        timeText.text = hour.ToString("00") + ":" + minute.ToString("00");
     }
-    
-    
-    private void SetText(TextMeshProUGUI tmp, bool active, string text="")
+
+    private void OnBalanceChanged(int newMoney)
+    {
+        moneyText.text = $"${newMoney.ToString("F2")}";
+    }
+
+    private void Update()
+    {
+        if (Keyboard.current.numpadEnterKey.wasPressedThisFrame)
+        {
+            debugMenu.ToggleMenu();
+            InputManager.ToggleCursorLock();
+        }
+    }
+
+    private void SetText(TextMeshProUGUI tmp, bool active, string text = null)
     {
         if (!tmp) return;
-        if (active && !string.IsNullOrEmpty(text)) tmp.text = text;
         tmp.gameObject.SetActive(active);
+        if (active && !string.IsNullOrEmpty(text))
+            tmp.text = text;
     }
 }

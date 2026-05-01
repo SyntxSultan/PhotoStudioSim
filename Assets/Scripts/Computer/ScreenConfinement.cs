@@ -1,5 +1,3 @@
-using System.Collections.Generic;
-using MoreMountains.Tools;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.LowLevel;
@@ -48,8 +46,6 @@ public class ScreenConfinement : MonoBehaviour
 
     private void Update()
     {
-        MMDebug.DebugOnScreen(Cursor.lockState.ToString());
-        MMDebug.DebugOnScreen(Cursor.visible.ToString());
         if (!ComputerState.Instance.IsPlayerSit) return;
 
         HandleSessionActivation();

@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using DG.Tweening;
 using UnityEngine;
 
 /// <summary>
@@ -17,16 +18,14 @@ using UnityEngine;
 /// </summary>
 public class DesktopController : MonoBehaviour
 {
+    [SerializeField] private ComputerSplashScreen splashScreen;
+    [SerializeField] private float computerOpenTime = 3; 
     [SerializeField] private RectTransform windowParent;
     [SerializeField] private List<AppDefinition> initialApps = new();
+    
 
-    // Yüklü uygulamalar
     private readonly List<AppDefinition> installedApps = new();
-
-    // Açık pencereler
     private readonly List<AppWindow> openWindows = new();
-
-    // Bir app'tan en fazla bir pencere kuralı için açık app takibi
     private readonly Dictionary<AppDefinition, AppWindow> activeWindows = new();
 
 
@@ -49,7 +48,19 @@ public class DesktopController : MonoBehaviour
 
     private void OnSessionStart()
     {
-        windowParent.gameObject.SetActive(true);
+        StartCoroutine(SplashScreen());
+    }
+
+    private System.Collections.IEnumerator SplashScreen()
+    {
+        splashScreen.gameObject.SetActive(true);
+        yield return new WaitForSeconds(computerOpenTime);
+        DOTween.Sequence().Append(splashScreen.GetComponent<CanvasGroup>().DOFade(0, 0.25f))
+            .OnComplete(() =>
+            {
+                splashScreen.gameObject.SetActive(false);
+                windowParent.gameObject.SetActive(true);
+            });
     }
 
     private void OnSessionEnd()
@@ -88,6 +99,12 @@ public class DesktopController : MonoBehaviour
         if (!installedApps.Contains(def))
         {
             Debug.LogWarning($"[Desktop] {def.appName} yüklü değil.");
+            return null;
+        }
+
+        if (def.windowPrefab == null)
+        {
+            Debug.LogError($"[Desktop] {def.appName} does not have a window prefab assigned!");
             return null;
         }
 

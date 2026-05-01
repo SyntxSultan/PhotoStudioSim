@@ -14,9 +14,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::ItemDefinition
   itemName:
     m_TableReference:
-      m_TableCollectionName: 
+      m_TableCollectionName: GUID:4b757296a2bfcb947acc0c01cb31c642
     m_TableEntryReference:
-      m_KeyId: 0
+      m_KeyId: 89524654080
       m_Key: 
     m_FallbackState: 0
     m_WaitForCompletion: 0
