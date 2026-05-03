@@ -3,6 +3,7 @@
   <Project Path="SingularityGroup.HotReload.Editor.csproj" />
   <Project Path="MoreMountains.Tools.Editor.csproj" />
   <Project Path="Assembly-CSharp.csproj" />
+  <Project Path="OccaSoftware.SuperSimpleSkybox.Editor.csproj" />
   <Project Path="VHierarchy.csproj" />
   <Project Path="SingularityGroup.HotReload.Runtime.csproj" />
   <Project Path="NaughtyAttributes.Core.csproj" />
@@ -10,6 +11,7 @@
   <Project Path="NaughtyAttributes.Editor.csproj" />
   <Project Path="DamageNumbersPro.csproj" />
   <Project Path="Assembly-CSharp-firstpass.csproj" />
+  <Project Path="OccaSoftware.SuperSimpleSkybox.Runtime.csproj" />
   <Project Path="SingularityGroup.HotReload.Runtime.Public.csproj" />
   <Project Path="Assembly-CSharp-Editor.csproj" />
 </Solution>
