@@ -23,6 +23,18 @@ MonoBehaviour:
     m_Key: hud.pickup
     m_Metadata:
       m_Items: []
+  - m_Id: 15535035903234048
+    m_Key: hud.takepicture
+    m_Metadata:
+      m_Items: []
+  - m_Id: 15535142270783488
+    m_Key: hud.toggleFlash
+    m_Metadata:
+      m_Items: []
+  - m_Id: 15535301658529792
+    m_Key: hud.cameraZoom
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:

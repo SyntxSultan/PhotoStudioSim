@@ -36,18 +36,18 @@ public class ShopRatingManager : MonoBehaviour
 
         if (ratingRules.Count == 0)
         {
-            ratingRules.Add(new WaitTimeRatingRule { Weight = 1.5f });
-            ratingRules.Add(new OrderAccuracyRatingRule { Weight = 2f });
-            ratingRules.Add(new MaterialQualityRatingRule { Weight = 1f });
+            ratingRules.Add(new WaitTimeRatingRule {  });
+            ratingRules.Add(new OrderAccuracyRatingRule {  });
+            ratingRules.Add(new MaterialQualityRatingRule {  });
         }
     }
     private void Reset()
     {
         ratingRules = new List<RatingRule>
         {
-            new WaitTimeRatingRule { Weight = 1.5f },
-            new OrderAccuracyRatingRule { Weight = 2f },
-            new MaterialQualityRatingRule { Weight = 1f }
+            new WaitTimeRatingRule {  },
+            new OrderAccuracyRatingRule {  },
+            new MaterialQualityRatingRule {  }
         };
     }
 
@@ -62,11 +62,15 @@ public class ShopRatingManager : MonoBehaviour
         float weightedScore = 0f;
         var comments        = new List<LocalizedString>();
 
+        Debug.Log($"=== Rating Calculation Start ===\nAccuracy: {context.OrderAccuracyScore:P0}, Quality: {context.MaterialQualityScore:P0}, WaitTime: {context.WaitTime}s");
+
         foreach (var rule in ratingRules)
         {
             float score = rule.Evaluate(context);
             totalWeight   += rule.Weight;
             weightedScore += score * rule.Weight;
+
+            Debug.Log($"  {rule.GetType().Name}: Score={score:F2}, Weight={rule.Weight}, Weighted={score * rule.Weight:F2}");
 
             // Sadece IReviewCommentProvider uygulayan kurallardan yorum toplanır
             if (rule is IReviewCommentProvider commentProvider)
@@ -85,6 +89,8 @@ public class ShopRatingManager : MonoBehaviour
         float normalizedScore = Mathf.Clamp01(weightedScore / totalWeight);
         int rating = Mathf.RoundToInt(normalizedScore * (maxRating - minRating) + minRating);
         rating = Mathf.Clamp(rating, minRating, maxRating);
+
+        Debug.Log($"Total Weight: {totalWeight}, Weighted Score: {weightedScore:F2}, Normalized: {normalizedScore:F2} → Rating: {rating} ⭐");
 
         var review = new CustomerReview(rating, DetermineSentiment(rating), comments);
         reviews.Add(review);

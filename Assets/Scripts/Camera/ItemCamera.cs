@@ -10,18 +10,18 @@ public class ItemCamera : BasePickableItem, IUsable
 {
     public LocalizedString UseHint => Definition.useHint;
     
-    [SerializeField] private Canvas screenCanvas;
-    
     [Header("Lens")]
     [SerializeField] private Camera lensCamera;
     [Tooltip("Must be same RenderTexture with lensCamera.targetTexture.")]
     [SerializeField] private RenderTexture viewfinderTexture;
+    [SerializeField] private CameraScreen cameraScreen;
     
     [Header("Zoom")]
     [SerializeField] private float zoomSpeed = 0.2f;
     [SerializeField] private Ease zoomEase = Ease.OutQuad;
     [SerializeField] private float maxFov = 100;
-    [SerializeField] private float minFov = 20;
+    [SerializeField] private float minFov = 20;  
+    [SerializeField] private float normalFov = 50; 
     
     [SerializeField] private Vector3 focusOnCameraLocalPosition;
     private bool wasRightButtonPressed = false;
@@ -36,13 +36,9 @@ public class ItemCamera : BasePickableItem, IUsable
 
     [Header("Sound / Effect")]
     [SerializeField] private MMF_Player photoTakenEffects;
-
     
     [Header("Flash")]
     [SerializeField] private bool useFlash = true;
-    [SerializeField] private UnityEngine.UI.Image flashImage;
-    [SerializeField] private Sprite flashOnSprite;
-    [SerializeField] private Sprite flashOffSprite;
 
     private readonly List<Texture2D> localPhotos = new();
     private bool isHeld;
@@ -60,7 +56,17 @@ public class ItemCamera : BasePickableItem, IUsable
 
         if (isRightPressed != wasRightButtonPressed)
         {
-            SetLocalPosition(isRightPressed ? focusOnCameraLocalPosition : Definition.holdPositionOffset);
+            if (isRightPressed)
+            {
+                PlayerInteraction.Instance.DisableInteraction();
+                SetLocalPosition(focusOnCameraLocalPosition);
+            }
+            else
+            {
+                PlayerInteraction.Instance.EnableInteraction();
+                SetLocalPosition(Definition.holdPositionOffset);
+            }
+            
             wasRightButtonPressed = isRightPressed;
         }
 
@@ -76,7 +82,11 @@ public class ItemCamera : BasePickableItem, IUsable
         }
         
         
-        //Zoom In/Out
+        HandleZoomInput();
+    }
+
+    private void HandleZoomInput()
+    {
         float scroll = Mouse.current.scroll.ReadValue().y;
 
         if (scroll != 0f)
@@ -91,6 +101,8 @@ public class ItemCamera : BasePickableItem, IUsable
 
             lensCamera.DOKill();
             lensCamera.DOFieldOfView(targetFOV, 0.25f).SetEase(zoomEase);
+            
+            cameraScreen.UpdateZoomDisplay(currentFOV, normalFov);
         }
     }
     
@@ -119,7 +131,8 @@ public class ItemCamera : BasePickableItem, IUsable
     {
         isHeld = true;
         lensCamera.enabled = true;
-        screenCanvas.gameObject.SetActive(true);
+        cameraScreen.SetScreenActive(true);
+        cameraScreen.UpdateZoomDisplay(currentFOV, normalFov);
     }
 
     protected override void OnDropped()
@@ -127,15 +140,15 @@ public class ItemCamera : BasePickableItem, IUsable
         isHeld = false;
         wasRightButtonPressed = false; 
         lensCamera.enabled = false;
-        screenCanvas.gameObject.SetActive(false);
+        cameraScreen.SetScreenActive(false);
     }
 
     private void ToggleFlash()
     {
         useFlash = !useFlash;
-        flashImage.sprite = useFlash ? flashOnSprite : flashOffSprite;
+        cameraScreen.SetFlashImage(useFlash);
     }
-    
+
     private void TakePhoto()
     {
         if (localPhotos.Count >= maxLocalPhotos) return;

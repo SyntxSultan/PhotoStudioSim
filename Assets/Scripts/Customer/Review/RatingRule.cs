@@ -5,13 +5,9 @@ using UnityEngine.Localization;
 [Serializable]
 public abstract class RatingRule : IRatingRule
 {
-    private float weight = 1f;
+    [SerializeField] private float weight = 1f;
 
-    public float Weight
-    {
-        get => Mathf.Max(0f, weight);
-        set => weight = value;
-    }
+    public float Weight => weight;
 
     public abstract float Evaluate(ShopRatingContext context);
 }

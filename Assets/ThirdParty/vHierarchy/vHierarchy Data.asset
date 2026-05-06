@@ -33,6 +33,7 @@ MonoBehaviour:
         - globalObjectIdString: GlobalObjectId_V1-2-99c9720ab356a0642a771bea13969a05-1857183348-0
         - globalObjectIdString: GlobalObjectId_V1-2-99c9720ab356a0642a771bea13969a05-987753189-0
         - globalObjectIdString: GlobalObjectId_V1-2-99c9720ab356a0642a771bea13969a05-2134102441-0
+        - globalObjectIdString: GlobalObjectId_V1-2-99c9720ab356a0642a771bea13969a05-1757665856-0
         values:
         - colorIndex: 2
           iconNameOrGuid: Canvas Icon
@@ -94,6 +95,12 @@ MonoBehaviour:
           iconNameOrGuid: Settings Icon
           isIconRecursive: 0
           isColorRecursive: 0
+        - colorIndex: 1
+          iconNameOrGuid: Settings Icon
+          isIconRecursive: 0
+          isColorRecursive: 0
   bookmarks: []
   bookmarkedScenePaths:
-  - Assets/Scenes/SampleScene.unity
+  - Assets/Scenes/PrototypeScene.unity
+  - Assets/Scenes/MainMenu/MainMenu.unity
+  - Assets/ThirdParty/Feel/MMTools/Core/MMSceneLoading/LoadingScreens/LoadingScreen.unity

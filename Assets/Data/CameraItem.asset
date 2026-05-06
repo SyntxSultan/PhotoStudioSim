@@ -36,9 +36,9 @@ MonoBehaviour:
   isUseable: 1
   useHint:
     m_TableReference:
-      m_TableCollectionName: GUID:8e4e5389e2ba5de4e8a3659620bcdfd4
+      m_TableCollectionName: GUID:196ce7f8933b5444b9d2f0b279bf144e
     m_TableEntryReference:
-      m_KeyId: 7538593792
+      m_KeyId: 15535035903234048
       m_Key: 
     m_FallbackState: 0
     m_WaitForCompletion: 0

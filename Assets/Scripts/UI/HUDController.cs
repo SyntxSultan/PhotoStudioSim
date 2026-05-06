@@ -114,15 +114,6 @@ public class HUDController : MonoBehaviour
         moneyText.text = $"${newMoney.ToString("F2")}";
     }
 
-    private void Update()
-    {
-        if (Keyboard.current.numpadEnterKey.wasPressedThisFrame)
-        {
-            debugMenu.ToggleMenu();
-            InputManager.ToggleCursorLock();
-        }
-    }
-
     private void SetText(TextMeshProUGUI tmp, bool active, string text = null)
     {
         if (!tmp) return;

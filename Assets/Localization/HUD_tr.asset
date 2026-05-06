@@ -26,6 +26,18 @@ MonoBehaviour:
     m_Localized: Eline Al
     m_Metadata:
       m_Items: []
+  - m_Id: 15535035903234048
+    m_Localized: "Foto\u011Fraf \xC7ek"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 15535142270783488
+    m_Localized: "Flash A\xE7/Kapat"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 15535301658529792
+    m_Localized: "Fare Tekerle\u011Fi ile Yak\u0131nla\u015Ft\u0131r"
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []

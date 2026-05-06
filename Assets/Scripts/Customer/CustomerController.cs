@@ -144,14 +144,15 @@ public class CustomerController : MonoBehaviour, IInteractable
         orderManager?.CompleteOrder(orderResult);
 
         OnServiceCompleted?.Invoke(this, orderResult);
-        Debug.Log($"CustomerController: Service completed for customer {name} with result: Accuracy {orderResult.AccuracyScore}, Quality {orderResult.MaterialQualityScore}", this);
 
         if (shopRatingManager != null)
         {
+            float actualWaitTime = CustomerData.ServiceCompletedAt - CustomerData.ServiceStartedAt;
+                        
             var context = new ShopRatingContext
             {
                 ShopStarLevel = shopRatingManager.CurrentShopStarLevel,
-                WaitTime = CustomerData.WaitDuration,
+                WaitTime = actualWaitTime,
                 OrderAccuracyScore = orderResult.AccuracyScore,
                 MaterialQualityScore = orderResult.MaterialQualityScore
             };
@@ -161,7 +162,7 @@ public class CustomerController : MonoBehaviour, IInteractable
             Debug.Log($"CustomerController: Submitted rating {rating} for customer {name}", this);
         }
 
-        PlayerItemHolder.Instance?.ClearCurrentItem();
+        PlayerItemHolder.Instance.ClearCurrentItem();
     }
 
     public void BeginExit()

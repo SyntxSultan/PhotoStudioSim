@@ -105,7 +105,7 @@ public class ServiceTable : MonoBehaviour, IServiceTable
             CompletedAt = Time.time
         };
 
-        Debug.Log($"ServiceTable: Completed order {currentOrder.OrderId} - Accuracy: {accuracyScore:P0}, Quality: {materialQualityScore:P0}");
+        Debug.Log($"ServiceTable: Completed order {currentOrder.OrderId} - Accuracy: {accuracyScore}, Quality: {materialQualityScore}");
 
         onServiceCompleteCallback?.Invoke(result);
         Release();
@@ -114,23 +114,22 @@ public class ServiceTable : MonoBehaviour, IServiceTable
     private float ComparePrintSettingsNormalized(PrintSettings actual, PrintSettings expected)
     {
         float score = 0f;
-        if (actual.paperSize == expected.paperSize) score += 1f;
-        if (actual.paperOrientation == expected.paperOrientation) score += 1f;
-        if (actual.paperFit == expected.paperFit) score += 1f;
-        if (actual.isColored == expected.isColored) score += 1f;
-        if (actual.quality == expected.quality) score += 1f;
-        return score / 5f;
+        if (actual.paperSize        == expected.paperSize)          score += 1f;
+        if (actual.paperOrientation == expected.paperOrientation)   score += 1f;
+        if (actual.paperFit         == expected.paperFit)           score += 1f;
+        if (actual.isColored        == expected.isColored)          score += 1f;
+        return score / 4f;
     }
 
     private float GetQualityScore(PrintQuality quality)
     {
         return quality switch
         {
-            PrintQuality.Low => 0.5f,
-            PrintQuality.Average => 0.65f,
-            PrintQuality.High => 0.8f,
+            PrintQuality.Low => 0.25f,
+            PrintQuality.Average => 0.50f,
+            PrintQuality.High => 0.75f,
             PrintQuality.UltraHigh => 1f,
-            _ => 0f
+            _ => -1f
         };
     }
 }

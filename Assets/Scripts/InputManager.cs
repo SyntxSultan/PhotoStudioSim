@@ -1,6 +1,11 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 
+
+/// <summary>
+/// Handles player input using the new Input System. 
+/// Also handles key binding and cursor locking.
+/// </summary>
 public class InputManager : MonoBehaviour
 {
     public static InputManager Instance {  get; private set; }
@@ -12,31 +17,45 @@ public class InputManager : MonoBehaviour
     private float sprintTimer = 0f;
     private const float sprintDelay = 0.15f;
 
-    private void Start()
+    private void Awake()
     {
+        if (Instance != null && Instance != this)
+        {
+            Destroy(gameObject);
+            return;
+        }
         Instance = this;
+        DontDestroyOnLoad(gameObject);
+
         actions = new PlayerInputActions();
         actions.Enable();
 
-        Cursor.lockState = CursorLockMode.Locked;
-        Cursor.visible = false;
+        BindInputEvents();
+    }
+
+    private void OnDestroy()
+    {
+        UnbindInputEvents();
+    }
+
+    private void BindInputEvents()
+    {
+        actions.Player.Pause.performed += Pause_Performed;
+    }
+
+    private void UnbindInputEvents()
+    {
+        actions.Player.Pause.performed -= Pause_Performed;
+    } 
+
+    private void Pause_Performed(InputAction.CallbackContext context)
+    {
+        GameManager.Instance.TogglePauseGame();
     }
 
     private void Update()
     {
         SprintTimer();
-
-        //DEBUG
-        if (Keyboard.current.tKey.wasPressedThisFrame)
-        {
-            ToggleCursorLock();
-        }
-    }
-
-    public static void ToggleCursorLock()
-    {
-        Cursor.lockState = Cursor.lockState == CursorLockMode.Locked ? CursorLockMode.None : CursorLockMode.Locked;
-        Cursor.visible = !Cursor.visible;
     }
 
     private void SprintTimer()
@@ -54,6 +73,12 @@ public class InputManager : MonoBehaviour
             sprintTimer = 0f;
             localSprint = false;
         }
+    }
+
+    public static void SetCursorLock(bool locked)
+    {
+        Cursor.lockState = locked ? CursorLockMode.Locked : CursorLockMode.None;
+        Cursor.visible = !locked;
     }
 
     public Vector2 GetMovementInput() => actions.Player.Move.ReadValue<Vector2>();
@@ -81,4 +106,5 @@ public class InputManager : MonoBehaviour
     /// <summary>Sol tık şu an basılı tutuluyor mu?</summary>
     public bool GetUseInput()
         => Mouse.current != null && Mouse.current.leftButton.isPressed;
+
 }
