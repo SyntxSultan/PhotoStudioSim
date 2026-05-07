@@ -22,6 +22,30 @@ MonoBehaviour:
     m_Localized: Settings
     m_Metadata:
       m_Items: []
+  - m_Id: 16560539527663616
+    m_Localized: Quit To Desktop
+    m_Metadata:
+      m_Items: []
+  - m_Id: 16560681689403392
+    m_Localized: Quit To Main Menu
+    m_Metadata:
+      m_Items: []
+  - m_Id: 16560909117149184
+    m_Localized: Play
+    m_Metadata:
+      m_Items: []
+  - m_Id: 16560959893393408
+    m_Localized: Resume
+    m_Metadata:
+      m_Items: []
+  - m_Id: 16624877118541824
+    m_Localized: New Game
+    m_Metadata:
+      m_Items: []
+  - m_Id: 16625240869556224
+    m_Localized: Quit
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []

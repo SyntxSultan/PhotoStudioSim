@@ -21,48 +21,64 @@ MonoBehaviour:
     audioAsset: {fileID: 8300000, guid: 04ee76c723465b54196cedac182ba2c1, type: 3}
   colorItems:
   - itemID: Primary
-    colorValue: {r: 1, g: 1, b: 1, a: 1}
+    colorValue: {r: 0.9411765, g: 0.9411765, b: 0.9411765, a: 1}
   - itemID: Primary (Soft)
-    colorValue: {r: 1, g: 1, b: 1, a: 0.039215688}
+    colorValue: {r: 0.9411765, g: 0.9411765, b: 0.9411765, a: 0.039215688}
   - itemID: Primary (Tint)
-    colorValue: {r: 1, g: 1, b: 1, a: 0.19607843}
+    colorValue: {r: 0.9411765, g: 0.9411765, b: 0.9411765, a: 0.19607843}
   - itemID: Secondary
-    colorValue: {r: 0.09411765, g: 0.09411765, b: 0.105882354, a: 1}
+    colorValue: {r: 0.23529412, g: 0.21960784, b: 0.21176471, a: 1}
   - itemID: Accent
-    colorValue: {r: 0.39215687, g: 0.7058824, b: 1, a: 1}
+    colorValue: {r: 0.99607843, g: 0.5019608, b: 0.09803922, a: 1}
   - itemID: Accent (Soft)
-    colorValue: {r: 0.3921569, g: 0.7058824, b: 1, a: 0.05882353}
+    colorValue: {r: 0.99607843, g: 0.5019608, b: 0.09803922, a: 0.05882353}
   - itemID: Accent (Tint)
-    colorValue: {r: 0.3921569, g: 0.7058824, b: 1, a: 0.29411766}
+    colorValue: {r: 0.99607843, g: 0.5019608, b: 0.09803922, a: 0.29411766}
   - itemID: Background
-    colorValue: {r: 0.14117648, g: 0.15686275, b: 0.17254902, a: 1}
+    colorValue: {r: 0.11372549, g: 0.1254902, b: 0.12941177, a: 1}
   - itemID: Background (Dim)
     colorValue: {r: 0.07058824, g: 0.08627451, b: 0.101960786, a: 1}
   - itemID: Background (Tint)
     colorValue: {r: 0.14117648, g: 0.15686275, b: 0.17254902, a: 0.60784316}
+  - itemID: Creamy
+    colorValue: {r: 0.92156863, g: 0.85882354, b: 0.69803923, a: 1}
   fontItems:
   - itemID: Inter - Thin
-    fontAsset: {fileID: 11400000, guid: 96eb00110fc45a4419e31e46260e8ff8, type: 2}
+    fontAsset: {fileID: 11400000, guid: 81facff2346e3014a96115fb92776dc2, type: 2}
   - itemID: Inter - Extra Light
-    fontAsset: {fileID: 11400000, guid: a16d1c914212b6e42ab432c67f9f9dfe, type: 2}
+    fontAsset: {fileID: 11400000, guid: 90090ec4440362042a5368c61913bd2f, type: 2}
   - itemID: Inter - Light
-    fontAsset: {fileID: 11400000, guid: 12bfa3ad839da984fb1b576b7c9dda3f, type: 2}
+    fontAsset: {fileID: 11400000, guid: b9eaf5570922ec845b483eb8974e9cef, type: 2}
   - itemID: Inter - Regular
-    fontAsset: {fileID: 11400000, guid: e1f6f3c48c4339d40a4e834c7fffd389, type: 2}
+    fontAsset: {fileID: 11400000, guid: 6bdb9c1d8b3ace1408d2de12e30ae744, type: 2}
   - itemID: Inter - Medium
-    fontAsset: {fileID: 11400000, guid: 59c4b77acc3103543951b549dc90f091, type: 2}
+    fontAsset: {fileID: 11400000, guid: ca41716b31c560c4ab5667448aaae70c, type: 2}
   - itemID: Inter - Semi Bold
-    fontAsset: {fileID: 11400000, guid: 7891b6019d9520046beeba33711d49b4, type: 2}
+    fontAsset: {fileID: 11400000, guid: 7b816c6270cdaaf4ca2d5919e6dbca0d, type: 2}
   - itemID: Inter - Bold
-    fontAsset: {fileID: 11400000, guid: 69c7192704fc7b64dbb9cb7f5132f2a0, type: 2}
+    fontAsset: {fileID: 11400000, guid: 8788bd9d9a3de504b832c80b8618fbff, type: 2}
   - itemID: Inter - Extra Bold
-    fontAsset: {fileID: 11400000, guid: a0c6002e88ecb0b488a0e3155da1d311, type: 2}
+    fontAsset: {fileID: 11400000, guid: 961c0212f9d0c3d4da8c1a034e9a13bf, type: 2}
   - itemID: Inter - Black
-    fontAsset: {fileID: 11400000, guid: 967d826010e823e4f8880e622bb5f099, type: 2}
+    fontAsset: {fileID: 11400000, guid: 4be21f40c8e9ed149abd8691e94e799d, type: 2}
+  - itemID: IBM - Regular
+    fontAsset: {fileID: 11400000, guid: 6bcd061f0bf6fef4dbb26eb02a6ec325, type: 2}
+  - itemID: IBM - Medium
+    fontAsset: {fileID: 11400000, guid: 75e321a956b8b9743be9507de9f36cd4, type: 2}
+  - itemID: IBM - Semi Bold
+    fontAsset: {fileID: 11400000, guid: 9abf68c8c9c5b5a4aafc79a7bc951d45, type: 2}
+  - itemID: IBM - Bold
+    fontAsset: {fileID: 11400000, guid: 20bf2c0d379d09b42940be8f6e7feb78, type: 2}
+  - itemID: Jakarta - Bold
+    fontAsset: {fileID: 11400000, guid: 9b99ff29afe83824da0effbdf96d534a, type: 2}
+  - itemID: Jakarta - ExtraBold
+    fontAsset: {fileID: 11400000, guid: 4974f137cf27b1e4fa7063331fa2fb50, type: 2}
+  - itemID: Space - Bold
+    fontAsset: {fileID: 11400000, guid: f344c80f6f093a74da05b01e6a6ffd7f, type: 2}
   spriteItems: []
   updateMode: 1
-  audioFoldout: 1
-  colorFoldout: 0
+  audioFoldout: 0
+  colorFoldout: 1
   fontFoldout: 0
   spriteFoldout: 0
   settingsFoldout: 0

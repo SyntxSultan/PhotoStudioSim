@@ -22,6 +22,30 @@ MonoBehaviour:
     m_Localized: Ayarlar
     m_Metadata:
       m_Items: []
+  - m_Id: 16560539527663616
+    m_Localized: "Masa\xFCst\xFCne \xC7\u0131k"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 16560681689403392
+    m_Localized: "Ana Men\xFC"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 16560909117149184
+    m_Localized: Oyna
+    m_Metadata:
+      m_Items: []
+  - m_Id: 16560959893393408
+    m_Localized: Devam et
+    m_Metadata:
+      m_Items: []
+  - m_Id: 16624877118541824
+    m_Localized: Yeni Oyun
+    m_Metadata:
+      m_Items: []
+  - m_Id: 16625240869556224
+    m_Localized: "\xC7\u0131k\u0131\u015F"
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []

@@ -19,6 +19,30 @@ MonoBehaviour:
     m_Key: ui.settings
     m_Metadata:
       m_Items: []
+  - m_Id: 16560539527663616
+    m_Key: ui.quitToDesktop
+    m_Metadata:
+      m_Items: []
+  - m_Id: 16560681689403392
+    m_Key: ui.quitToMainMenu
+    m_Metadata:
+      m_Items: []
+  - m_Id: 16560909117149184
+    m_Key: ui.play
+    m_Metadata:
+      m_Items: []
+  - m_Id: 16560959893393408
+    m_Key: ui.resume
+    m_Metadata:
+      m_Items: []
+  - m_Id: 16624877118541824
+    m_Key: ui.newgame
+    m_Metadata:
+      m_Items: []
+  - m_Id: 16625240869556224
+    m_Key: ui.quit
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:

@@ -6,6 +6,7 @@
   <Project Path="Evo.UI.Editor.csproj" />
   <Project Path="DamageNumbersPro.csproj" />
   <Project Path="VHierarchy.csproj" />
+  <Project Path="Sirenix.OdinInspector.Modules.UnityLocalization.Editor.csproj" />
   <Project Path="SingularityGroup.HotReload.Runtime.csproj" />
   <Project Path="Evo.Editor.csproj" />
   <Project Path="NaughtyAttributes.Core.csproj" />
@@ -14,8 +15,11 @@
   <Project Path="NaughtyAttributes.Editor.csproj" />
   <Project Path="Assembly-CSharp-firstpass.csproj" />
   <Project Path="SingularityGroup.HotReload.Runtime.Public.csproj" />
+  <Project Path="Sirenix.OdinInspector.Modules.Unity.Addressables.csproj" />
   <Project Path="OccaSoftware.SuperSimpleSkybox.Runtime.csproj" />
   <Project Path="Evo.csproj" />
+  <Project Path="Sirenix.OdinInspector.Modules.UnityMathematics.csproj" />
   <Project Path="Assembly-CSharp-Editor.csproj" />
+  <Project Path="Sirenix.OdinInspector.Modules.UnityLocalization.csproj" />
   <Project Path="OccaSoftware.SuperSimpleSkybox.Editor.csproj" />
 </Solution>
