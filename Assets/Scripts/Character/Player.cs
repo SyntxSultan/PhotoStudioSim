@@ -27,7 +27,7 @@ public class Player : MonoBehaviour
             Rotation = playerCamera.transform.rotation,
             Move = InputManager.Instance.GetMovementInput(),
             Jump = InputManager.Instance.GetJumpInput(),
-            Crouch = InputManager.Instance.GetCrouchInput() ? CrouchInput.Toggle : CrouchInput.None,
+            Crouch = InputManager.Instance.GetCrouchInput(),
             Sprint = InputManager.Instance.GetSprintInput()
         };
         
@@ -41,7 +41,7 @@ public class Player : MonoBehaviour
         PlayerState.Instance.SetMovementState(
             isMoving: characterInput.Move.magnitude > 0.1f,
             isSprinting: characterInput.Sprint,
-            isCrouching: characterInput.Crouch == CrouchInput.Toggle
+            isCrouching: characterInput.Crouch
         );
     }
 

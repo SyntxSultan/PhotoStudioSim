@@ -47,19 +47,12 @@ public class PlayerItemHolder : MonoBehaviour
     private void Start()
     {
         mainCamera = Camera.main;
+        InputManager.Instance.OnDropKeyPressed += Drop;
     }
 
     private void Update()
     {
-        HandleDropInput();
         HandleUseInput();
-    }
-
-    private void HandleDropInput()
-    {
-        if (!IsHoldingItem) return;
-
-        if (InputManager.Instance.DropKeyPressed()) Drop();
     }
 
     private void HandleUseInput()

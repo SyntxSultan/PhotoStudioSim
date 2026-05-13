@@ -17,19 +17,6 @@ namespace OccaSoftware.SuperSimpleSkybox.Runtime
     public class DirectionalLight : MonoBehaviour
     {
         [SerializeField]
-        [Min(0)]
-        private float rotationsPerHour = 1f;
-
-        /// <summary>
-        /// The rate of rotation of the directional light. Set as number of rotations per hour.
-        /// </summary>
-        public float RotationsPerHour
-        {
-            get => rotationsPerHour;
-            set => rotationsPerHour = value;
-        }
-
-        [SerializeField]
         private bool automaticLightIntensity = true;
 
         /// <summary>
@@ -41,8 +28,6 @@ namespace OccaSoftware.SuperSimpleSkybox.Runtime
             set => automaticLightIntensity = value;
         }
 
-        [SerializeField]
-        [Min(0)]
         private float maximumLightIntensity = 2f;
 
         /// <summary>
@@ -84,7 +69,6 @@ namespace OccaSoftware.SuperSimpleSkybox.Runtime
 
         protected virtual void Update()
         {
-            Rotate();
             lightAngle = GetLightAngle();
             SetLightState();
             SetLightIntensity();
@@ -115,23 +99,6 @@ namespace OccaSoftware.SuperSimpleSkybox.Runtime
                 state = LightState.Down;
                 OnSet?.Invoke();
             }
-        }
-
-        /// <summary>
-        /// Rotates the transform based on the rotation speed.
-        /// </summary>
-        private void Rotate()
-        {
-            if (!Application.isPlaying)
-                return;
-
-            if (rotationsPerHour == 0f)
-                return;
-
-            transform.Rotate(
-                transform.right * rotationsPerHour * Time.deltaTime * 0.1f,
-                Space.World
-            );
         }
 
         /// <summary>

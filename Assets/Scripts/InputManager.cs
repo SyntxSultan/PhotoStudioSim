@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -9,6 +10,10 @@ using UnityEngine.InputSystem;
 public class InputManager : MonoBehaviour
 {
     public static InputManager Instance {  get; private set; }
+
+    public event Action OnDropKeyPressed;
+    public event Action OnInteractKeyPressed;
+    public event Action<int> OnQuickSlotKeyPressed;
 
     private PlayerInputActions actions;
 
@@ -41,12 +46,27 @@ public class InputManager : MonoBehaviour
     private void BindInputEvents()
     {
         actions.Player.Pause.performed += Pause_Performed;
+        actions.Player.Drop.performed += context => OnDropKeyPressed?.Invoke();
+        actions.Player.Interact.performed += context => OnInteractKeyPressed?.Invoke();
+
+        actions.Player.QuickSlot.performed += context =>
+        {
+            int slotIndex = int.Parse(context.control.name) - 1;
+            OnQuickSlotKeyPressed?.Invoke(slotIndex);
+        };
     }
 
     private void UnbindInputEvents()
     {
         actions.Player.Pause.performed -= Pause_Performed;
-    } 
+        actions.Player.Drop.performed -= context => OnDropKeyPressed?.Invoke();
+        actions.Player.Interact.performed -= context => OnInteractKeyPressed?.Invoke();
+        actions.Player.QuickSlot.performed -= context =>
+        {
+            int slotIndex = int.Parse(context.control.name) - 1;
+            OnQuickSlotKeyPressed?.Invoke(slotIndex);
+        };
+    }
 
     private void Pause_Performed(InputAction.CallbackContext context)
     {
@@ -90,10 +110,6 @@ public class InputManager : MonoBehaviour
     public bool GetCrouchInput() => actions.Player.Crouch.WasPressedThisFrame();
 
     public bool GetSprintInput() => localSprint;
-
-    public bool InteractKeyPressed() => actions.Player.Interact.WasPressedThisFrame();
-
-    public bool DropKeyPressed() => actions.Player.Drop.WasPressedThisFrame();
 
     /// <summary>Sol tık bu frame basıldı mı? (Kullanımı başlat)</summary>
     public bool GetUseInputDown()

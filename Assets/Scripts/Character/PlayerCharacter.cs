@@ -2,10 +2,6 @@ using System;
 using KinematicCharacterController;
 using UnityEngine;
 
-public enum CrouchInput
-{
-    None, Toggle
-}
 public enum Stance
 {
     Stand, Crouch
@@ -20,7 +16,7 @@ public struct CharacterInput
     public Quaternion Rotation;
     public Vector2 Move;
     public bool Jump;
-    public CrouchInput Crouch;
+    public bool Crouch;
     public bool Sprint;
 }
 [RequireComponent(typeof(KinematicCharacterMotor))]
@@ -102,12 +98,10 @@ public class PlayerCharacter : MonoBehaviour, ICharacterController
             timeSinceJumpRequested = 0f;
         }
         
-        requestedCrouch = input.Crouch switch
+        if (input.Crouch)
         {
-            CrouchInput.Toggle => !requestedCrouch,
-            CrouchInput.None => requestedCrouch,
-            _ => requestedCrouch
-        };
+            requestedCrouch = !requestedCrouch;
+        }
 
         requestedSprint = input.Sprint && stance is Stance.Stand;
 

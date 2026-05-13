@@ -42,6 +42,7 @@ public class PlayerInteraction : MonoBehaviour
     private void Start()
     {
         mainCam = Camera.main;
+        InputManager.Instance.OnInteractKeyPressed += HandleInteractInput;
         if (!mainCam)
             Debug.LogError("[PlayerInteraction] Ana kamera bulunamadı!");
     }
@@ -50,7 +51,6 @@ public class PlayerInteraction : MonoBehaviour
     {
         if (!shouldCheckInteraction) return;
         PerformRaycast();
-        HandleInteractInput();
     }
 
     public void DisableInteraction()
@@ -107,8 +107,6 @@ public class PlayerInteraction : MonoBehaviour
 
     private void HandleInteractInput()
     {
-        if (!InputManager.Instance.InteractKeyPressed()) return;
-
         if (DetectedPickable != null)
         {
             PlayerItemHolder.Instance.TryPickup(DetectedPickable);

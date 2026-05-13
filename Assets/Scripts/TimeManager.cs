@@ -16,8 +16,7 @@ public class TimeManager : MonoBehaviour
     [Header("Day & Night Settings")]
     [SerializeField, Range(0f, 24f)] private float sunriseHour = 6f; // Gündoğumu
     [SerializeField, Range(0f, 24f)] private float sunsetHour = 18f; // Günbatımı
-    [SerializeField] private float transitionDuration = 1f; // Güneşin doğuş/batış geçiş süresi (oyun içi saat olarak)
-    [SerializeField] private float nightSunIntensity = 0.1f; // Gece güneş/ay ışığı gücü
+    [SerializeField] private float moonlightIntensity = 0.1f; // Gece güneş/ay ışığı gücü
     [SerializeField] private float daySunIntensity = 3f; // Gündüz güneş ışığı gücü
 
     [Header("Sky")]
@@ -58,6 +57,12 @@ public class TimeManager : MonoBehaviour
         timeMultiplier = 24f / dayDurationInRealSeconds; 
     }
 
+    private void Start()
+    {
+        sun.MaximumLightIntensity = daySunIntensity;
+        moon.MaximumLightIntensity = moonlightIntensity;
+    }
+
     private void Update()
     {
         UpdateTime();
@@ -85,30 +90,6 @@ public class TimeManager : MonoBehaviour
     private void UpdateDayNightCycle()
     {
         IsDay = CurrentTimeOfDay >= sunriseHour && CurrentTimeOfDay < sunsetHour;
-
-        // Güneş ışığı yoğunluğunu yumuşak (Lerp) bir şekilde hesapla
-        if (CurrentTimeOfDay >= sunriseHour && CurrentTimeOfDay < sunriseHour + transitionDuration)
-        {
-            // Gündoğumu geçişi
-            float t = (CurrentTimeOfDay - sunriseHour) / transitionDuration;
-            SunIntensity = Mathf.Lerp(nightSunIntensity, daySunIntensity, t);
-        }
-        else if (CurrentTimeOfDay >= sunsetHour - transitionDuration && CurrentTimeOfDay < sunsetHour)
-        {
-            // Günbatımı geçişi
-            float t = (CurrentTimeOfDay - (sunsetHour - transitionDuration)) / transitionDuration;
-            SunIntensity = Mathf.Lerp(daySunIntensity, nightSunIntensity, t);
-        }
-        else if (IsDay)
-        {
-            // Tam öğlen
-            SunIntensity = daySunIntensity;
-        }
-        else
-        {
-            // Gece
-            SunIntensity = nightSunIntensity;
-        }
     }
 
     private void CheckTimeChangedEvent()
