@@ -17,6 +17,13 @@ public class QuestHUD : MonoBehaviour
     [SerializeField] private float endXPos = 350f;
     [SerializeField] private float animationTime = 0.5f;
     
+    private CanvasGroup canvasGroup;
+
+    private void Start()
+    {
+        canvasGroup = questPanel.GetComponent<CanvasGroup>();
+    }
+
     private void OnEnable()
     {
         orderManager.OnOrderRegistered += SetQuestDisplay;
@@ -31,7 +38,7 @@ public class QuestHUD : MonoBehaviour
 
     public void SetQuestDisplay(OrderData orderData)
     {
-        questPanel.gameObject.SetActive(true);
+        FunctionLibrary.SetCanvasGroupActive(ref canvasGroup, true);
 
         orderTypeText.text = $"Quest: {orderData.OrderType}";
         orderDetailsText.text = orderData.Description;
@@ -47,7 +54,7 @@ public class QuestHUD : MonoBehaviour
     {
         questPanel.DOAnchorPosX(startXPos, animationTime).SetEase(Ease.InBack).OnComplete(() =>
         {
-            questPanel.gameObject.SetActive(false);
+            FunctionLibrary.SetCanvasGroupActive(ref canvasGroup, false);
         });
     }
 }

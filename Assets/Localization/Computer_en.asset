@@ -22,6 +22,10 @@ MonoBehaviour:
     m_Localized: WELCOME
     m_Metadata:
       m_Items: []
+  - m_Id: 8922084085714944
+    m_Localized: SHUTDOWN
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []

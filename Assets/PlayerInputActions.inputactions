@@ -86,6 +86,15 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "ComputerLeave",
+                    "type": "Button",
+                    "id": "23257ff4-461c-448e-8a16-c39ac3a544a3",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -361,6 +370,17 @@
                     "processors": "",
                     "groups": "",
                     "action": "QuickSlot",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "70294f59-d098-43b8-8b86-6f8b0e4fc18f",
+                    "path": "<Keyboard>/tab",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "ComputerLeave",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

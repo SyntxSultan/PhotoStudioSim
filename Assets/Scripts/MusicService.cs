@@ -39,17 +39,6 @@ public class MusicService : MonoBehaviour
         audioSource.playOnAwake = false;
     }
 
-    private void Start()
-    {
-        ComputerState.Instance.OnPowerOut += OnPowerOut;
-    }
-
-    private void OnDestroy()
-    {
-        if (ComputerState.Instance != null)
-            ComputerState.Instance.OnPowerOut -= OnPowerOut;
-    }
-
     private void LateUpdate()
     {
         //This must be at LateUpdate do not modify.

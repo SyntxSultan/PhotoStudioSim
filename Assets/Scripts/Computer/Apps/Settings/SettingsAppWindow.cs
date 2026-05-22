@@ -1,36 +1,40 @@
 using UnityEngine;
 
-public class SettingsAppWindow : AppWindow
+namespace SyntaxSultan.ComputerSystem.Apps
 {
-    [SerializeField] private Transform wallpapersContainer;
-    [SerializeField] private WallpaperPreviewBox wallpaperPreviewBoxPrefab;
-    [SerializeField] private Sprite[] wallpapers;
-    
-    private WallpaperPreviewBox selectedBox;
-
-
-    protected override void OnOpened()
+    public class SettingsAppWindow : AppWindow
     {
-        selectedBox = null;
-        FunctionLibrary.DestroyChildren(wallpapersContainer);
+        [SerializeField] private Transform wallpapersContainer;
+        [SerializeField] private WallpaperPreviewBox wallpaperPreviewBoxPrefab;
+        [SerializeField] private Sprite[] wallpapers;
 
-        foreach (var wallpaper in wallpapers)
+        private WallpaperPreviewBox selectedBox;
+
+
+        protected override void OnOpened()
         {
-            WallpaperPreviewBox box = Instantiate(wallpaperPreviewBoxPrefab, wallpapersContainer);
-            box.SetWallpaperImage(wallpaper);
+            selectedBox = null;
+            FunctionLibrary.DestroyChildren(wallpapersContainer);
 
-            box.OnWallpaperClicked += () => HandleWallpaperSelected(box, wallpaper);
+            foreach (var wallpaper in wallpapers)
+            {
+                WallpaperPreviewBox box = Instantiate(wallpaperPreviewBoxPrefab, wallpapersContainer);
+                box.SetWallpaperImage(wallpaper);
+
+                box.OnWallpaperClicked += () => HandleWallpaperSelected(box, wallpaper);
+            }
+        }
+
+        private void HandleWallpaperSelected(WallpaperPreviewBox box, Sprite wallpaper)
+        {
+            if (selectedBox != null)
+                selectedBox.SetSelected(false);
+
+            selectedBox = box;
+            selectedBox.SetSelected(true);
+
+            ComputerSettings.Instance.SetWallpaper(wallpaper);
         }
     }
 
-    private void HandleWallpaperSelected(WallpaperPreviewBox box, Sprite wallpaper)
-    {
-        if (selectedBox != null)
-            selectedBox.SetSelected(false);
-
-        selectedBox = box;
-        selectedBox.SetSelected(true);
-
-        ComputerSettings.Instance.SetWallpaper(wallpaper);
-    }
 }

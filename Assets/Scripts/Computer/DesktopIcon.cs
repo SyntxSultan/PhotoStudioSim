@@ -2,41 +2,41 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 
-[RequireComponent(typeof(Button))]
-
-/// <summary>
-/// Masaüstü ikon prefabı'na eklenir.
-/// Çift tıklama: uygulamayı aç.
-/// </summary>
-public class DesktopIcon : MonoBehaviour
+namespace SyntaxSultan.ComputerSystem
 {
-    [SerializeField] private Image iconImage;
-    [SerializeField] private TextMeshProUGUI label;
-    [SerializeField] private Button button;
+    [RequireComponent(typeof(Button))]
 
-    private AppDefinition def;
-    private DesktopController desktop;
-
-    // Çift tıklama takibi
-    private float lastClickTime;
-    private const float DoubleClickThreshold = 0.3f;
-
-    public void Setup(AppDefinition appDef, DesktopController desktopCtrl)
+    public class DesktopIcon : MonoBehaviour
     {
-        def = appDef;
-        desktop = desktopCtrl;
+        [SerializeField] private Image iconImage;
+        [SerializeField] private TextMeshProUGUI label;
+        [SerializeField] private Button button;
 
-        if (iconImage && def.icon) iconImage.sprite = def.icon;
-        if (label) label.text = def.appName;
-        if (button) button.onClick.AddListener(OnClick);
-    }
+        private AppDefinition def;
+        private AppManager appManager;
 
-    private void OnClick()
-    {
-        float now = Time.unscaledTime;
-        if (now - lastClickTime <= DoubleClickThreshold)
-            desktop.OpenApp(def);
+        // Çift tıklama takibi
+        private float lastClickTime;
+        private const float DoubleClickThreshold = 0.3f;
 
-        lastClickTime = now;
+        public void Setup(AppDefinition appDef, AppManager inAppManager)
+        {
+            def = appDef;
+            appManager = inAppManager;
+
+            if (iconImage && def.icon) iconImage.sprite = def.icon;
+            if (label) label.text = def.appName;
+            if (button) button.onClick.AddListener(OnClick);
+        }
+
+        private void OnClick()
+        {
+            float now = Time.unscaledTime;
+            if (now - lastClickTime <= DoubleClickThreshold)
+            {
+                appManager.RequestOpenApp(def); 
+            }
+            lastClickTime = now;
+        }
     }
 }

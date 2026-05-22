@@ -1,14 +1,16 @@
+using System;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
     public static GameManager Instance { get; private set; }
 
-    private PauseMenuUI pauseMenuUI;
-    private SettingsUI settingsUI;
-
-    private bool isGamePaused = false;
+    public event Action OnGamePause;
+    public event Action OnGameResume;
+    
+    private bool isGamePaused;
 
     private void Awake()
     {
@@ -26,6 +28,19 @@ public class GameManager : MonoBehaviour
         Application.targetFrameRate = 144;
     }
 
+    private void Update()
+    {
+        Cheats();
+    }
+
+    private void Cheats()
+    {
+        if (Keyboard.current.tKey.wasPressedThisFrame)
+        {
+            InputManager.ToggleCursorLock();
+        }
+    }
+
     private void OnEnable()
     {
         SceneManager.sceneLoaded += OnSceneLoaded;
@@ -39,42 +54,39 @@ public class GameManager : MonoBehaviour
     private void OnSceneLoaded(Scene s, LoadSceneMode loadSceneMode)
     {
         if (s.name.Equals("PrototypeScene")) InputManager.SetCursorLock(true);
-        pauseMenuUI = FindFirstObjectByType<PauseMenuUI>(FindObjectsInactive.Include);    
-        settingsUI = FindFirstObjectByType<SettingsUI>(FindObjectsInactive.Include);
     }
 
     public void TogglePauseGame()
     {
-        if (pauseMenuUI == null) return;
-
         isGamePaused = !isGamePaused;
+        HandleGamePause(isGamePaused);
+    }
 
-        if (isGamePaused)
+    public void ResumeGame()
+    {
+        isGamePaused = false;
+        HandleGamePause(isGamePaused);
+    }
+
+    public void PauseGame()
+    {
+        isGamePaused = true;
+        HandleGamePause(isGamePaused);
+    }
+
+    private void HandleGamePause(bool isPaused)
+    {
+        if (isPaused)
         {
             InputManager.SetCursorLock(false);
-            pauseMenuUI.gameObject.SetActive(true);
+            OnGamePause?.Invoke();
             Time.timeScale = 0f;
         }
         else
         {
             InputManager.SetCursorLock(true);
-            pauseMenuUI.gameObject.SetActive(false);
-            settingsUI.gameObject.SetActive(false);
             Time.timeScale = 1f;
+            OnGameResume?.Invoke();
         }
-    }
-
-    public void OpenSettings()
-    {
-        if (settingsUI == null) return;
-
-        settingsUI.gameObject.SetActive(true);
-    }
-
-    public void CloseSettings()
-    {
-        if (settingsUI == null) return;
-
-        settingsUI.gameObject.SetActive(false);
     }
 }

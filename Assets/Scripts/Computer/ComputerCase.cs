@@ -1,14 +1,18 @@
 ﻿using UnityEngine;
 using UnityEngine.Localization;
 
-public class ComputerCase : MonoBehaviour, IInteractable
+namespace SyntaxSultan.ComputerSystem
 {
-    [SerializeField] private LocalizedString interactHint;
-    public LocalizedString InteractHint => interactHint;
-    public bool CanInteract => true;
-
-    public void Interact()
+    public class ComputerCase : MonoBehaviour, IInteractable
     {
-        ComputerState.Instance.TogglePower();
+        [SerializeField] private Computer computer;
+        [SerializeField] private LocalizedString interactHint;
+        public LocalizedString InteractHint => interactHint;
+        public bool CanInteract => computer != null;
+
+        public void Interact()
+        {
+            computer.TogglePower();
+        }
     }
 }

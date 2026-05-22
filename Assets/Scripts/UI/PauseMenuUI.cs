@@ -4,36 +4,60 @@ using System;
 
 public class PauseMenuUI : MonoBehaviour
 {
+    [SerializeField] private RectTransform pauseMenu;
     [SerializeField] private ModalWindow confirmationPopup;
     [SerializeField] private Button resumeButton;
     [SerializeField] private Button settingsButton;
     [SerializeField] private Button quitToMainMenuButton;
     [SerializeField] private Button quitToDesktopButton;
+    
+    private CanvasGroup canvasGroup;
 
-    private void OnEnable()
+    private void Start()
     {
+        canvasGroup = pauseMenu.GetComponent<CanvasGroup>();
+        
+        GameManager.Instance.OnGamePause += GameManager_OnGamePause;
+        GameManager.Instance.OnGameResume += GameManager_OnGameResume;
+        
         resumeButton.onClick.AddListener(ResumeGame);
         settingsButton.onClick.AddListener(OpenSettings);
         quitToMainMenuButton.onClick.AddListener(ConfirmQuitToMainMenu);
         quitToDesktopButton.onClick.AddListener(ConfirmQuitToDesktop);
-    }
 
-    private void OnDisable()
+    }
+    
+    private void OnDestroy()
     {
+        GameManager.Instance.OnGamePause -= GameManager_OnGamePause;
+        GameManager.Instance.OnGameResume -= GameManager_OnGameResume;
+        
         resumeButton.onClick.RemoveListener(ResumeGame);
         settingsButton.onClick.RemoveListener(OpenSettings);
         quitToMainMenuButton.onClick.RemoveListener(ConfirmQuitToMainMenu);
         quitToDesktopButton.onClick.RemoveListener(ConfirmQuitToDesktop);
     }
 
+    private void GameManager_OnGameResume()
+    {
+        Debug.Log("Game Resumed");
+        FunctionLibrary.SetCanvasGroupActive(ref canvasGroup, false);
+    }
+
+    private void GameManager_OnGamePause()
+    {
+        Debug.Log("Game Paused");
+        FunctionLibrary.SetCanvasGroupActive(ref canvasGroup, true);
+    }
+
     private void ResumeGame()
     {
-        GameManager.Instance.TogglePauseGame();
+        GameManager.Instance.ResumeGame();
     }
 
     private void OpenSettings()
     {
-        GameManager.Instance.OpenSettings();
+        //GameManager.Instance.OpenSettings();
     }
 
     private void ConfirmQuitToDesktop()

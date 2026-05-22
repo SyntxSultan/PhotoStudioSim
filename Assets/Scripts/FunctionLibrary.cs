@@ -27,4 +27,11 @@ public static class FunctionLibrary
             MonoBehaviour.Instantiate(emptyStarPrefab, starsContainer.transform);
         }
     }
+
+    public static void SetCanvasGroupActive(ref CanvasGroup canvasGroup, bool isEnabled)
+    {
+        canvasGroup.interactable = isEnabled;
+        canvasGroup.blocksRaycasts = isEnabled;
+        canvasGroup.alpha = isEnabled ? 1 : 0;
+    }
 }

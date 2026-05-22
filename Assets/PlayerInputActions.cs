@@ -172,6 +172,15 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""ComputerLeave"",
+                    ""type"": ""Button"",
+                    ""id"": ""23257ff4-461c-448e-8a16-c39ac3a544a3"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -449,6 +458,17 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                     ""action"": ""QuickSlot"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""70294f59-d098-43b8-8b86-6f8b0e4fc18f"",
+                    ""path"": ""<Keyboard>/tab"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""ComputerLeave"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -466,6 +486,7 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         m_Player_Drop = m_Player.FindAction("Drop", throwIfNotFound: true);
         m_Player_Pause = m_Player.FindAction("Pause", throwIfNotFound: true);
         m_Player_QuickSlot = m_Player.FindAction("QuickSlot", throwIfNotFound: true);
+        m_Player_ComputerLeave = m_Player.FindAction("ComputerLeave", throwIfNotFound: true);
     }
 
     ~@PlayerInputActions()
@@ -555,6 +576,7 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_Drop;
     private readonly InputAction m_Player_Pause;
     private readonly InputAction m_Player_QuickSlot;
+    private readonly InputAction m_Player_ComputerLeave;
     /// <summary>
     /// Provides access to input actions defined in input action map "Player".
     /// </summary>
@@ -602,6 +624,10 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         /// Provides access to the underlying input action "Player/QuickSlot".
         /// </summary>
         public InputAction @QuickSlot => m_Wrapper.m_Player_QuickSlot;
+        /// <summary>
+        /// Provides access to the underlying input action "Player/ComputerLeave".
+        /// </summary>
+        public InputAction @ComputerLeave => m_Wrapper.m_Player_ComputerLeave;
         /// <summary>
         /// Provides access to the underlying input action map instance.
         /// </summary>
@@ -655,6 +681,9 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
             @QuickSlot.started += instance.OnQuickSlot;
             @QuickSlot.performed += instance.OnQuickSlot;
             @QuickSlot.canceled += instance.OnQuickSlot;
+            @ComputerLeave.started += instance.OnComputerLeave;
+            @ComputerLeave.performed += instance.OnComputerLeave;
+            @ComputerLeave.canceled += instance.OnComputerLeave;
         }
 
         /// <summary>
@@ -693,6 +722,9 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
             @QuickSlot.started -= instance.OnQuickSlot;
             @QuickSlot.performed -= instance.OnQuickSlot;
             @QuickSlot.canceled -= instance.OnQuickSlot;
+            @ComputerLeave.started -= instance.OnComputerLeave;
+            @ComputerLeave.performed -= instance.OnComputerLeave;
+            @ComputerLeave.canceled -= instance.OnComputerLeave;
         }
 
         /// <summary>
@@ -796,5 +828,12 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
         void OnQuickSlot(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "ComputerLeave" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnComputerLeave(InputAction.CallbackContext context);
     }
 }

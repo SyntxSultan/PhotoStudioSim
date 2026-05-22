@@ -28,11 +28,11 @@ public class SettingsUI : MonoBehaviour
             confirmationPopup.SetTitle("Unsaved Changes");
             confirmationPopup.SetDescription("You have unsaved changes. Are you sure you want to exit?");
             confirmationPopup.Open();
-            confirmationPopup.onConfirm.AddListener(() => GameManager.Instance.CloseSettings());
+            //confirmationPopup.onConfirm.AddListener(() => GameManager.Instance.CloseSettings());
         }
         else
         {
-            GameManager.Instance.CloseSettings();
+            //GameManager.Instance.CloseSettings();
         }
     }
 

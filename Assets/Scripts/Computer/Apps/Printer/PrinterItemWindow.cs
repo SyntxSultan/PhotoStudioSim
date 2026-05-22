@@ -1,6 +1,9 @@
 using UnityEngine;
 
-public class PrinterItemWindow : AppWindow
+namespace SyntaxSultan.ComputerSystem.Apps
 {
+    public class PrinterItemWindow : AppWindow
+    {
     
+    }
 }

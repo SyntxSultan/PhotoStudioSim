@@ -22,6 +22,10 @@ MonoBehaviour:
     m_Localized: "HO\u015E GELD\u0130N\u0130Z"
     m_Metadata:
       m_Items: []
+  - m_Id: 8922084085714944
+    m_Localized: "G\xFCle G\xFCle"
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []

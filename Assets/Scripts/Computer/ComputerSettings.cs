@@ -29,7 +29,7 @@ public class ComputerSettings : MonoBehaviour
 
     private void UpdateTimeDisplay()
     {
-        timeText.text = $"{UniStormManager.Instance.GetHour()}:{UniStormManager.Instance.GetMinutes()}";
+        timeText.text = $"{UniStormManager.Instance.GetHour():00}:{UniStormManager.Instance.GetMinutes():00}";
     }
 
     public void SetWallpaper(Sprite wallpaper)

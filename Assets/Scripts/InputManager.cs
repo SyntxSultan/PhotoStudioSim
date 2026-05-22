@@ -97,8 +97,14 @@ public class InputManager : MonoBehaviour
 
     public static void SetCursorLock(bool locked)
     {
-        Cursor.lockState = locked ? CursorLockMode.Locked : CursorLockMode.None;
+        Cursor.lockState = locked ? CursorLockMode.Locked : CursorLockMode.Confined;
         Cursor.visible = !locked;
+    }
+
+    public static void ToggleCursorLock()
+    {
+        Cursor.lockState = Cursor.lockState == CursorLockMode.Locked ? CursorLockMode.Confined : CursorLockMode.Locked;
+        Cursor.visible = !Cursor.visible;
     }
 
     public Vector2 GetMovementInput() => actions.Player.Move.ReadValue<Vector2>();

@@ -19,6 +19,10 @@ MonoBehaviour:
     m_Key: computer.welcome
     m_Metadata:
       m_Items: []
+  - m_Id: 8922084085714944
+    m_Key: computer.shutdown
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:
