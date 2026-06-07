@@ -95,4 +95,41 @@ public abstract class BasePickableItem : MonoBehaviour, IPickable
 
     /// <summary>Item bırakıldıktan hemen sonra çağrılır.</summary>
     protected virtual void OnDropped() { }
+    
+    
+    // ─────────────────────────────────────────────────────────────
+    // Envanter Entegrasyonu
+
+    /// <summary>
+    /// Hold point'ten ayrılır; fizik ve collider durumu korunur.
+    /// Yalnızca PlayerItemHolder.DetachForStorage() tarafından çağrılmalıdır.
+    /// </summary>
+    public void PrepareForStorage()
+    {
+        IsHeld = false;
+        transform.SetParent(null);
+        // Rb.isKinematic ve colliders kasıtlı olarak değiştirilmez;
+        // envantere koyulana kadar bu durumda bekler.
+    }
+
+    /// <summary>
+    /// Item'ı storage objesine taşır ve sahneden gizler (yok etmez).
+    /// InventorySlot.TryStore() tarafından çağrılır.
+    /// </summary>
+    public void StoreInInventory(Transform storageRoot)
+    {
+        transform.SetParent(storageRoot);
+        gameObject.SetActive(false);
+    }
+
+    /// <summary>
+    /// Item'ı storage'dan geri getirir. Ardından TryPickup() beklenir.
+    /// InventorySlot.Take() tarafından çağrılır.
+    /// </summary>
+    public void RetrieveFromInventory()
+    {
+        gameObject.SetActive(true);
+        transform.SetParent(null);
+        // OnPickup() fizik ve collider'ları zaten düzenler.
+    }
 }

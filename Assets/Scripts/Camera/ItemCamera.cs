@@ -2,11 +2,12 @@ using System.Collections.Generic;
 using System.IO;
 using DG.Tweening;
 using MoreMountains.Feedbacks;
+using SyntaxSultan.InventoryModule;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.Localization;
 
-public class ItemCamera : BasePickableItem, IUsable
+public class ItemCamera : BasePickableItem, IUsable, IStorable
 {
     public LocalizedString UseHint => Definition.useHint;
     
@@ -195,4 +196,7 @@ public class ItemCamera : BasePickableItem, IUsable
             Debug.LogError($"Save failed: {e.Message}");
         }
     }
+
+    public bool CanStore => true;
+    public Sprite Icon => Definition.icon;
 }

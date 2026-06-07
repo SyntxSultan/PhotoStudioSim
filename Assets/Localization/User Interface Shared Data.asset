@@ -95,6 +95,18 @@ MonoBehaviour:
     m_Key: ui.settings.keybinds
     m_Metadata:
       m_Items: []
+  - m_Id: 27470333180497920
+    m_Key: ui.settings.resolution
+    m_Metadata:
+      m_Items: []
+  - m_Id: 27470568736804864
+    m_Key: ui.settings.fullscreen
+    m_Metadata:
+      m_Items: []
+  - m_Id: 27470639461158912
+    m_Key: ui.settings.texturequality
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:

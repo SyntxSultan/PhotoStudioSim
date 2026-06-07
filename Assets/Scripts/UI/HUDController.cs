@@ -1,18 +1,11 @@
-using MoreMountains.Tools;
 using TMPro;
 using UniStorm;
 using UnityEngine;
-using UnityEngine.InputSystem;
 using UnityEngine.Localization;
 
 public class HUDController : MonoBehaviour
 {
-    [SerializeField] private MMDebugMenu debugMenu;
-
-    [SerializeField] private TextMeshProUGUI interactionHintText;
-    [SerializeField] private TextMeshProUGUI useHintText;
-    [SerializeField] private TextMeshProUGUI dropHintText;
-    [SerializeField] private TextMeshProUGUI heldItemNameText;
+    [SerializeField] private HintManager hintManager;
     [SerializeField] private TextMeshProUGUI timeText;
     [SerializeField] private TextMeshProUGUI moneyText;
 
@@ -56,33 +49,20 @@ public class HUDController : MonoBehaviour
         PlayerItemHolder.Instance.OnHeldItemChanged += OnHeldItemChanged;
 
         PlayerInteraction.Instance.OnDetectionChanged += OnInteractionDetectionChanged;
-
-        SetText(interactionHintText, false);
-        SetText(useHintText, false);
-        SetText(dropHintText, false);
-        SetText(heldItemNameText, false);
     }
 
     private void OnInteractionDetectionChanged(BasePickableItem pickableItem, IInteractable interactable)
     {
-        if (pickableItem != null)
+        if (pickableItem)
         {
-            SetText(interactionHintText, true, cachedPickupHint);
+            hintManager.OnItemChanged(pickableItem.GetItemName(), interactable!=null, true);
         }
-        else if (interactable != null)
-        {
-            string translatedHint = interactable.InteractHint.GetLocalizedString();
-            SetText(interactionHintText, true, $"<b>E: </b> {translatedHint}");
-        }
-        else
-        {
-            SetText(interactionHintText, false);
-        }
+        else hintManager.OnItemChanged(null, interactable!=null, false);
     }
 
     private void OnHeldItemChanged(bool isHoldingItem, BasePickableItem holdingItem)
     {
-        if (isHoldingItem)
+        /*if (isHoldingItem)
         {
             SetText(heldItemNameText, true, holdingItem.GetItemName());
             SetText(dropHintText, true, cachedDropHint);
@@ -102,7 +82,7 @@ public class HUDController : MonoBehaviour
             SetText(heldItemNameText, false);
             SetText(useHintText, false);
             SetText(dropHintText, false);
-        }
+        }*/
     }
 
     private void OnTimeChanged()
@@ -112,7 +92,7 @@ public class HUDController : MonoBehaviour
 
     private void OnBalanceChanged(int newMoney)
     {
-        moneyText.text = $"${newMoney.ToString("F2")}";
+        moneyText.text = $"${newMoney:F2}";
     }
 
     private void SetText(TextMeshProUGUI tmp, bool active, string text = null)

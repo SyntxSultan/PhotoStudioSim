@@ -36,6 +36,10 @@ MonoBehaviour:
         - globalObjectIdString: GlobalObjectId_V1-2-99c9720ab356a0642a771bea13969a05-1757665856-0
         - globalObjectIdString: GlobalObjectId_V1-2-99c9720ab356a0642a771bea13969a05-1942652844-0
         - globalObjectIdString: GlobalObjectId_V1-2-99c9720ab356a0642a771bea13969a05-1239773508-0
+        - globalObjectIdString: GlobalObjectId_V1-2-99c9720ab356a0642a771bea13969a05-2110834326-0
+        - globalObjectIdString: GlobalObjectId_V1-2-99c9720ab356a0642a771bea13969a05-659609149-0
+        - globalObjectIdString: GlobalObjectId_V1-2-99c9720ab356a0642a771bea13969a05-330016781-0
+        - globalObjectIdString: GlobalObjectId_V1-2-99c9720ab356a0642a771bea13969a05-1504437509-0
         values:
         - colorIndex: 2
           iconNameOrGuid: Canvas Icon
@@ -73,31 +77,27 @@ MonoBehaviour:
           iconNameOrGuid: Settings Icon
           isIconRecursive: 0
           isColorRecursive: 0
-        - colorIndex: 1
+        - colorIndex: 0
           iconNameOrGuid: Settings Icon
           isIconRecursive: 0
           isColorRecursive: 0
-        - colorIndex: 1
+        - colorIndex: 0
           iconNameOrGuid: Settings Icon
           isIconRecursive: 0
           isColorRecursive: 0
-        - colorIndex: 1
+        - colorIndex: 0
           iconNameOrGuid: Settings Icon
           isIconRecursive: 0
           isColorRecursive: 0
-        - colorIndex: 1
+        - colorIndex: 0
           iconNameOrGuid: Settings Icon
           isIconRecursive: 0
           isColorRecursive: 0
-        - colorIndex: 1
+        - colorIndex: 0
           iconNameOrGuid: Settings Icon
           isIconRecursive: 0
           isColorRecursive: 0
-        - colorIndex: 1
-          iconNameOrGuid: Settings Icon
-          isIconRecursive: 0
-          isColorRecursive: 0
-        - colorIndex: 1
+        - colorIndex: 0
           iconNameOrGuid: Settings Icon
           isIconRecursive: 0
           isColorRecursive: 0
@@ -106,9 +106,29 @@ MonoBehaviour:
           isIconRecursive: 0
           isColorRecursive: 0
         - colorIndex: 0
+          iconNameOrGuid: Settings Icon
+          isIconRecursive: 0
+          isColorRecursive: 0
+        - colorIndex: 0
           iconNameOrGuid: Terrain Icon
           isIconRecursive: 0
           isColorRecursive: 0
+        - colorIndex: 0
+          iconNameOrGuid: Settings Icon
+          isIconRecursive: 0
+          isColorRecursive: 0
+        - colorIndex: 0
+          iconNameOrGuid: Settings Icon
+          isIconRecursive: 0
+          isColorRecursive: 0
+        - colorIndex: 0
+          iconNameOrGuid: Folder Icon
+          isIconRecursive: 0
+          isColorRecursive: 0
+        - colorIndex: 2
+          iconNameOrGuid: Folder Icon
+          isIconRecursive: 1
+          isColorRecursive: 1
   bookmarks: []
   bookmarkedScenePaths:
   - Assets/Scenes/PrototypeScene.unity

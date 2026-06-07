@@ -98,6 +98,18 @@ MonoBehaviour:
     m_Localized: "Tu\u015Flar"
     m_Metadata:
       m_Items: []
+  - m_Id: 27470333180497920
+    m_Localized: "\xC7\xF6z\xFCn\xFCrl\xFCk"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 27470568736804864
+    m_Localized: Tam Ekran
+    m_Metadata:
+      m_Items: []
+  - m_Id: 27470639461158912
+    m_Localized: Doku Kalitesi
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []

@@ -2,12 +2,6 @@ OVDF v1.1
 GameManager, Assembly-CSharp
 MetaGuid:2fd1ecb1613a6084693dfec8620fa930
 
-# $5PUgtuJDWi5CEJyyJ6uFbN
-Position: $root:1
-+ [Sirenix.OdinInspector.TitleGroupAttribute]
-	GroupName = "Runtime Values"
-	Alignment = Centered
-
 # settingsUI
 Position: $5PUgtuJDWi5CEJyyJ6uFbN:1
 Visibility: Shown
@@ -20,6 +14,6 @@ Visibility: Shown
 + [UnityEngine.SpaceAttribute]
 
 # isGamePaused
-Position: $5PUgtuJDWi5CEJyyJ6uFbN:2
+Position: $root:1
 Visibility: Shown
 + [Sirenix.OdinInspector.ReadOnlyAttribute]

@@ -45,27 +45,34 @@ public class InputManager : MonoBehaviour
 
     private void BindInputEvents()
     {
-        actions.Player.Pause.performed += Pause_Performed;
-        actions.Player.Drop.performed += context => OnDropKeyPressed?.Invoke();
-        actions.Player.Interact.performed += context => OnInteractKeyPressed?.Invoke();
-
-        actions.Player.QuickSlot.performed += context =>
-        {
-            int slotIndex = int.Parse(context.control.name) - 1;
-            OnQuickSlotKeyPressed?.Invoke(slotIndex);
-        };
+        actions.Player.Pause.performed    += Pause_Performed;
+        actions.Player.Drop.performed     += Drop_Performed;
+        actions.Player.Interact.performed += Interact_Performed;
+        actions.Player.QuickSlot.performed += QuickSlot_Performed;
     }
 
     private void UnbindInputEvents()
     {
-        actions.Player.Pause.performed -= Pause_Performed;
-        actions.Player.Drop.performed -= context => OnDropKeyPressed?.Invoke();
-        actions.Player.Interact.performed -= context => OnInteractKeyPressed?.Invoke();
-        actions.Player.QuickSlot.performed -= context =>
-        {
-            int slotIndex = int.Parse(context.control.name) - 1;
-            OnQuickSlotKeyPressed?.Invoke(slotIndex);
-        };
+        actions.Player.Pause.performed    -= Pause_Performed;
+        actions.Player.Drop.performed     -= Drop_Performed;
+        actions.Player.Interact.performed -= Interact_Performed;
+        actions.Player.QuickSlot.performed -= QuickSlot_Performed;
+    }
+
+    private void QuickSlot_Performed(InputAction.CallbackContext context)
+    {
+        int slotIndex = int.Parse(context.control.name) - 1;
+        OnQuickSlotKeyPressed?.Invoke(slotIndex);
+    }
+
+    private void Interact_Performed(InputAction.CallbackContext ctx)
+    {
+        OnInteractKeyPressed?.Invoke();
+    }
+
+    private void Drop_Performed(InputAction.CallbackContext ctx)
+    {
+        OnDropKeyPressed?.Invoke();
     }
 
     private void Pause_Performed(InputAction.CallbackContext context)

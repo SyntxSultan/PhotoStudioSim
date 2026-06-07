@@ -10,6 +10,7 @@ public class PauseMenuUI : MonoBehaviour
     [SerializeField] private Button settingsButton;
     [SerializeField] private Button quitToMainMenuButton;
     [SerializeField] private Button quitToDesktopButton;
+    [SerializeField] private SettingsUI settingsUI;
     
     private CanvasGroup canvasGroup;
 
@@ -42,6 +43,7 @@ public class PauseMenuUI : MonoBehaviour
     {
         Debug.Log("Game Resumed");
         FunctionLibrary.SetCanvasGroupActive(ref canvasGroup, false);
+        settingsUI.CloseSettings();
     }
 
     private void GameManager_OnGamePause()
@@ -57,7 +59,7 @@ public class PauseMenuUI : MonoBehaviour
 
     private void OpenSettings()
     {
-        //GameManager.Instance.OpenSettings();
+        settingsUI.OpenSettings();
     }
 
     private void ConfirmQuitToDesktop()

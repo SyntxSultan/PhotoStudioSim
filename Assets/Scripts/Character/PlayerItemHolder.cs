@@ -99,6 +99,31 @@ public class PlayerItemHolder : MonoBehaviour
 
         return true;
     }
+    
+    /// <summary>
+    /// Elde tutulan itemi envanter transferi için serbest bırakır.
+    /// Drop()'tan farklı olarak fizik kuvveti uygulamaz, item sahneye bırakılmaz.
+    ///
+    /// ÇAĞIRAN: InventoryController (TryStoreHeldItem / SwapHeldWithSlot)
+    /// </summary>
+    public BasePickableItem DetachForStorage()
+    {
+        if (!IsHoldingItem) return null;
+
+        if (isUsingItem)
+        {
+            currentUsable?.OnUseStop();
+            isUsingItem = false;
+        }
+
+        var item = currentItem;
+        item.PrepareForStorage(); // Hold point'ten ayır, fizik koru
+
+        currentItem   = null;
+        currentUsable = null;
+        OnHeldItemChanged?.Invoke(false, null);
+        return item;
+    }
 
     private void Drop()
     {
