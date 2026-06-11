@@ -12,9 +12,11 @@ public class PrintedPaper : BasePickableItem, IInteractable
     private Texture2D printedTexture;
 
     public LocalizedString InteractHint => Definition.interactHint;
+    public LocalizedString InteractName => Definition.itemName;
+
     public bool CanInteract => PlayerItemHolder.Instance != null
-        && PlayerItemHolder.Instance.IsHoldingItem
-        && PlayerItemHolder.Instance.CurrentItem is ItemEnvelope;
+                               && PlayerItemHolder.Instance.IsHoldingItem
+                               && PlayerItemHolder.Instance.CurrentItem is ItemEnvelope;
 
     public Texture2D PrintedTexture => printedTexture;
     public PrintSettings Settings => settings;

@@ -13,31 +13,6 @@ public class HUDController : MonoBehaviour
     [SerializeField] private LocalizedString localizedPickupHint;
     [SerializeField] private LocalizedString localizedDropHint;
 
-    private string cachedPickupHint = "";
-    private string cachedDropHint = "";
-
-    private void OnEnable()
-    {
-        localizedPickupHint.StringChanged += OnPickupHintChanged;
-        localizedDropHint.StringChanged += OnDropHintChanged;
-    }
-
-    private void OnDisable()
-    {
-        localizedPickupHint.StringChanged -= OnPickupHintChanged;
-        localizedDropHint.StringChanged -= OnDropHintChanged;
-    }
-
-    private void OnDropHintChanged(string value)
-    {
-        cachedDropHint = value;
-    }
-
-    private void OnPickupHintChanged(string value)
-    {
-        cachedPickupHint = value;
-    }
-
     private void Start()
     {
         CurrencyManager.Instance.OnBalanceChanged += OnBalanceChanged;
@@ -53,11 +28,14 @@ public class HUDController : MonoBehaviour
 
     private void OnInteractionDetectionChanged(BasePickableItem pickableItem, IInteractable interactable)
     {
-        if (pickableItem)
-        {
-            hintManager.OnItemChanged(pickableItem.GetItemName(), interactable!=null, true);
-        }
-        else hintManager.OnItemChanged(null, interactable!=null, false);
+        if (pickableItem != null && interactable != null)
+            hintManager.OnItemChanged(interactable.InteractName, true, true, interactable.InteractHint);
+        else if (pickableItem != null)
+            hintManager.OnItemChanged(pickableItem.GetItemName(), false, true, null);
+        else if (interactable != null)
+            hintManager.OnItemChanged(interactable.InteractName, true, false, interactable.InteractHint);
+        else
+            hintManager.OnItemChanged(null, false, false, null);
     }
 
     private void OnHeldItemChanged(bool isHoldingItem, BasePickableItem holdingItem)

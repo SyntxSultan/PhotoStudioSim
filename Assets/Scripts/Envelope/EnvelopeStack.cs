@@ -4,11 +4,13 @@ using UnityEngine.Localization;
 public class EnvelopeStack : MonoBehaviour, IInteractable
 {
     [SerializeField] private LocalizedString interactHint;
+    [SerializeField] private LocalizedString interactName;
     [SerializeField] private Transform spawnPoint;
     [SerializeField] private GameObject[] envelopeStackVisual;
     [SerializeField] private GameObject envelopePrefab;
 
     public LocalizedString InteractHint => interactHint;
+    public LocalizedString InteractName => interactName;
 
     public bool CanInteract => true;
 

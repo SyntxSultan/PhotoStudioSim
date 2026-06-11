@@ -6,10 +6,12 @@ public interface IInteractable
     /// Crosshair'de "E: ___" kısmında gösterilecek metin.
     /// </summary>
     LocalizedString InteractHint { get; }
+    
+    LocalizedString InteractName { get; }
 
     /// <summary>Bu nesne şu anda etkileşime açık mı?</summary>
     bool CanInteract { get; }
-
+    
     /// <summary>Oyuncu E tuşuna bastığında çağrılır.</summary>
     void Interact();
 }

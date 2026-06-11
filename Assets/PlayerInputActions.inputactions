@@ -52,15 +52,6 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "Interact",
-                    "type": "Button",
-                    "id": "8fc097f0-6602-4087-b25d-39ca37b99059",
-                    "expectedControlType": "",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": false
-                },
-                {
                     "name": "Drop",
                     "type": "Button",
                     "id": "da6d8c4a-cbeb-424a-a5f9-b1fb84fee7e0",
@@ -254,17 +245,6 @@
                 },
                 {
                     "name": "",
-                    "id": "d0ee3f97-2266-4364-a097-81f7f1dc3d26",
-                    "path": "<Keyboard>/e",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Interact",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
                     "id": "e914e5b3-6197-45a4-a1db-ff2418938dce",
                     "path": "<Keyboard>/g",
                     "interactions": "",
@@ -381,6 +361,45 @@
                     "processors": "",
                     "groups": "",
                     "action": "ComputerLeave",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
+        },
+        {
+            "name": "Interactions",
+            "id": "3ea92089-e0ef-4962-8fab-f0d9e076e2b4",
+            "actions": [
+                {
+                    "name": "Pickup",
+                    "type": "Button",
+                    "id": "5227213c-d33e-4078-93ce-acc1e17f9e7a",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "b331c9a0-8bb6-467f-bdca-62771f2b3b7e",
+                    "path": "<Keyboard>/e",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Pickup",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "0552c181-8fcc-49f4-9337-d6c1d47d0b6f",
+                    "path": "<Gamepad>/buttonWest",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Pickup",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

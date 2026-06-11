@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -16,6 +17,13 @@ public class CrosshairController : MonoBehaviour
 
     private bool isCrosshairEnabled = true;
     private PlayerInteraction interaction;
+    private RectTransform crosshairRect;
+
+    private void Awake()
+    {
+        if (crosshairImage != null)
+            crosshairRect = crosshairImage.rectTransform;
+    }
 
     private void Start()
     {
@@ -49,10 +57,27 @@ public class CrosshairController : MonoBehaviour
     private void UpdateCrosshairSize()
     {
         float targetSize = interaction.HasDetection ? highlightSize : normalSize;
-        float currentSize = crosshairImage.rectTransform.sizeDelta.x;
-        float newSize = Mathf.Lerp(currentSize, targetSize, Time.deltaTime * sizeSpeed);
+        Vector2 currentSize = crosshairRect.sizeDelta;
+        float current = currentSize.x;
 
-        crosshairImage.rectTransform.sizeDelta = new Vector2(newSize, newSize);
+        const float tolerance = 0.001f; // Adjustable tolerance
+
+        if (Mathf.Abs(current - targetSize) <= tolerance)
+        {
+            if (Mathf.Abs(current - targetSize) > 0f)
+            {
+                currentSize.x = currentSize.y = targetSize;
+                crosshairRect.sizeDelta = currentSize;
+            }
+            return;
+        }
+
+        // Lerp with frame-rate independent smoothing (recommended)
+        float t = 1f - Mathf.Pow(1f - Mathf.Clamp01(sizeSpeed), Time.deltaTime * 60f);
+        float newSize = Mathf.Lerp(current, targetSize, t);
+
+        currentSize.x = currentSize.y = newSize;
+        crosshairRect.sizeDelta = currentSize;
     }
 
     private void OnDestroy()

@@ -1053,7 +1053,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Evo.UI::Evo.UI.ProceduralRect
   m_Material: {fileID: 0}
   m_Color: {r: 0.14117648, g: 0.15686275, b: 0.17254902, a: 0.60784316}
-  m_RaycastTarget: 1
+  m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
@@ -1062,7 +1062,7 @@ MonoBehaviour:
   bypassPostProcessing: 0
   sprite: {fileID: 0}
   scaleMode: 1
-  raycastMode: 1
+  raycastMode: 0
   clipMethod: 0
   clipOrigin: 0
   clipAmount: 1

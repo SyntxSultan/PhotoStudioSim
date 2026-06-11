@@ -13,8 +13,8 @@ public class SettingsUI : MonoBehaviour
 
     [Header("UI Elements")]
     [SerializeField] private Dropdown resolutionDropdown;
-    [SerializeField] private Dropdown fullscreenToggle;
-    [SerializeField] private Dropdown vsyncToggle;
+    [SerializeField] private UnityEngine.UI.Toggle fullscreenToggle;
+    [SerializeField] private UnityEngine.UI.Toggle vsyncToggle;
     [SerializeField] private Dropdown textureQualityDropdown;
     [SerializeField] private Slider fovSlider;
     [SerializeField] private Selector languageDropdown;
@@ -84,13 +84,13 @@ public class SettingsUI : MonoBehaviour
             MarkAsDirty();
         });
 
-        fullscreenToggle.onItemSelected.AddListener(val => {
-            localSettings.isFullscreen = val == 1;
+        fullscreenToggle.onValueChanged.AddListener(val => {
+            localSettings.isFullscreen = val;
             MarkAsDirty();
         });
 
-        vsyncToggle.onItemSelected.AddListener(val => {
-            localSettings.useVSync = val == 1;
+        vsyncToggle.onValueChanged.AddListener(val => {
+            localSettings.useVSync = val;
             MarkAsDirty();
         });
 
@@ -112,8 +112,8 @@ public class SettingsUI : MonoBehaviour
     private void UpdateUIElements()
     {
         // UI elemanlarını localSettings verilerine göre eşitle
-        fullscreenToggle.SelectItem(localSettings.isFullscreen ? 1 : 0);
-        vsyncToggle.SelectItem(localSettings.useVSync ?  1 : 0);
+        fullscreenToggle.isOn = localSettings.isFullscreen;
+        vsyncToggle.isOn = localSettings.useVSync;
         textureQualityDropdown.SelectItem(localSettings.textureQuality);
         fovSlider.value = localSettings.fov;
         languageDropdown.SetSelection(localSettings.language);

@@ -20,6 +20,7 @@ public class GameManager : MonoBehaviour
             return;
         }
         Instance = this;
+        gameObject.transform.SetParent(null);
         DontDestroyOnLoad(gameObject);
     }
 

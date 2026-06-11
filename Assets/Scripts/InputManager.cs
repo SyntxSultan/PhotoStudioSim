@@ -30,6 +30,7 @@ public class InputManager : MonoBehaviour
             return;
         }
         Instance = this;
+        gameObject.transform.SetParent(null);
         DontDestroyOnLoad(gameObject);
 
         actions = new PlayerInputActions();
@@ -47,7 +48,7 @@ public class InputManager : MonoBehaviour
     {
         actions.Player.Pause.performed    += Pause_Performed;
         actions.Player.Drop.performed     += Drop_Performed;
-        actions.Player.Interact.performed += Interact_Performed;
+        actions.Interactions.Pickup.performed += Interact_Performed;
         actions.Player.QuickSlot.performed += QuickSlot_Performed;
     }
 
@@ -55,7 +56,7 @@ public class InputManager : MonoBehaviour
     {
         actions.Player.Pause.performed    -= Pause_Performed;
         actions.Player.Drop.performed     -= Drop_Performed;
-        actions.Player.Interact.performed -= Interact_Performed;
+        actions.Interactions.Pickup.performed -= Interact_Performed;
         actions.Player.QuickSlot.performed -= QuickSlot_Performed;
     }
 

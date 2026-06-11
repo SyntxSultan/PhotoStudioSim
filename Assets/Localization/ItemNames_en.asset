@@ -30,6 +30,14 @@ MonoBehaviour:
     m_Localized: Envelope
     m_Metadata:
       m_Items: []
+  - m_Id: 17886923149271040
+    m_Localized: Computer Case
+    m_Metadata:
+      m_Items: []
+  - m_Id: 17887573530632192
+    m_Localized: Monitor
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []

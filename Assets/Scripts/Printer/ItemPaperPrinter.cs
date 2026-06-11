@@ -6,6 +6,7 @@ public class ItemPaperPrinter : MonoBehaviour, IInteractable, INetworkDevice
 {
     [SerializeField] private NetworkDeviceSO networkData;
     [SerializeField] private LocalizedString interactHint;
+    [SerializeField] private LocalizedString interactName;
 
     [SerializeField] private Material displayMat;
     
@@ -23,6 +24,7 @@ public class ItemPaperPrinter : MonoBehaviour, IInteractable, INetworkDevice
     [SerializeField] private PrintedPaper prefabA5;
     
     public LocalizedString InteractHint => interactHint;
+    public LocalizedString InteractName => interactName;
     public bool CanInteract => !isPrinting;
     public NetworkDeviceSO GetNetworkDeviceData() => networkData;
     public PrintQuality GetMaxSupportedQuality() => maxSupportedQuality;

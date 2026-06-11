@@ -27,6 +27,14 @@ MonoBehaviour:
     m_Key: item.envelope
     m_Metadata:
       m_Items: []
+  - m_Id: 17886923149271040
+    m_Key: item.computer
+    m_Metadata:
+      m_Items: []
+  - m_Id: 17887573530632192
+    m_Key: item.monitor
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:

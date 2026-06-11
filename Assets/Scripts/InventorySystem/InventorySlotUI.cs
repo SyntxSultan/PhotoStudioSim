@@ -23,6 +23,7 @@ namespace SyntaxSultan.InventoryModule
             this.normalColor = normalColor;
             this.activeColor = activeColor;
             slotLabel.text = slotNumber.ToString();
+            SetIcon(null);
         }
 
         public void SetIcon(Sprite sprite)

@@ -23,7 +23,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 1799091983339520
-    m_Localized: Pick Up
+    m_Localized: 'E: Pickup'
     m_Metadata:
       m_Items: []
   - m_Id: 15535035903234048
@@ -36,6 +36,10 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 15535301658529792
     m_Localized: Use Mouse Wheel To Zoom
+    m_Metadata:
+      m_Items: []
+  - m_Id: 28191051560112128
+    m_Localized: 'E: Interact'
     m_Metadata:
       m_Items: []
   references:

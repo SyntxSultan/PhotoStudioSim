@@ -1,5 +1,4 @@
 using UnityEngine;
-
 /// <summary>
 /// Yerden alınabilen tüm itemlerin temel sınıfı.
 /// 
@@ -14,7 +13,7 @@ public abstract class BasePickableItem : MonoBehaviour, IPickable
     [SerializeField] private ItemDefinition definition;
     [SerializeField] private float throwForceMultiplier = 1f;
 
-    public string GetItemName() => definition.itemName.GetLocalizedString();
+    public UnityEngine.Localization.LocalizedString GetItemName() => definition.itemName;
     public bool IsUseable => definition.isUseable;
     public bool IsHeld { get; private set; }
     

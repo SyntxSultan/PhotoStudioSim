@@ -30,6 +30,14 @@ MonoBehaviour:
     m_Localized: Zarf
     m_Metadata:
       m_Items: []
+  - m_Id: 17886923149271040
+    m_Localized: "Bilgisayar Kasas\u0131"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 17887573530632192
+    m_Localized: "Monit\xF6r"
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []

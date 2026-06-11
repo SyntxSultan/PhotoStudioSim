@@ -21,6 +21,7 @@ public class SettingsManager : MonoBehaviour
             return;
         }
         Instance = this;
+        gameObject.transform.SetParent(null);
         DontDestroyOnLoad(gameObject);
         
         filePath = Path.Combine(Application.persistentDataPath, "settings.json");
@@ -52,7 +53,7 @@ public class SettingsManager : MonoBehaviour
             {
                 string json = File.ReadAllText(filePath);
                 CurrentSettings = JsonUtility.FromJson<Settings>(json);
-                Debug.Log($"Ayarlar dış dosyadan başarıyla yüklendi: {filePath}");
+                //Debug.Log($"Ayarlar dış dosyadan başarıyla yüklendi: {filePath}");
             }
             else
             {

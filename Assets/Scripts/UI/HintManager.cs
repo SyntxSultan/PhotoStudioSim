@@ -1,15 +1,62 @@
 using UnityEngine;
+using UnityEngine.Localization;
+using UnityEngine.UI;
 
 public class HintManager : MonoBehaviour
 {
+    [Header("Item Name Settings")]
     [SerializeField] private TMPro.TextMeshProUGUI itemNameText;
-    [SerializeField] private GameObject pickupHint;
-    [SerializeField] private GameObject interactHint;
+    [SerializeField] private CanvasGroup itemNameGroup;
+    [SerializeField] private LayoutElement itemNameLayout;
 
-    public void OnItemChanged(string itemName, bool interact, bool pickup)
+    [Header("Pickup Hint Settings")]
+    [SerializeField] private CanvasGroup pickupHint;
+    [SerializeField] private LayoutElement pickupLayout;
+
+    [Header("Interact Hint Settings")] 
+    [SerializeField] private TMPro.TextMeshProUGUI interactHintText;
+    [SerializeField] private CanvasGroup interactHint;
+    [SerializeField] private LayoutElement interactLayout;
+    
+    private void Start()
     {
-        itemNameText.text = itemName;
-        interactHint.SetActive(interact);
-        pickupHint.SetActive(pickup);
+        OnItemChanged(null, false, false, null);
+    }
+
+    public void OnItemChanged(LocalizedString itemName, bool interact, bool pickup, LocalizedString interactText)
+    {
+        string resolvedName = itemName?.GetLocalizedString();
+        if (string.IsNullOrEmpty(resolvedName))
+        {
+            ToggleUIElement(itemNameGroup, itemNameLayout, false);
+        }
+        else
+        {
+            itemNameText.text = resolvedName;
+            ToggleUIElement(itemNameGroup, itemNameLayout, true);
+        }
+
+        string resolvedInteract = interactText?.GetLocalizedString();
+        if (!string.IsNullOrEmpty(resolvedInteract))
+            interactHintText.text = resolvedInteract;
+
+        ToggleUIElement(interactHint, interactLayout, interact);
+        ToggleUIElement(pickupHint, pickupLayout, pickup);
+    }
+    
+    private void ToggleUIElement(CanvasGroup group, LayoutElement layout, bool show)
+    {
+        if (group != null)
+        {
+            group.alpha = show ? 1f : 0f;
+            group.blocksRaycasts = show;
+            group.interactable = show;
+        }
+
+        if (layout != null)
+        {
+            // Eğer show = false ise, ignoreLayout = true olacak (Layout alanı çökecek)
+            layout.ignoreLayout = !show;
+        }
     }
 }

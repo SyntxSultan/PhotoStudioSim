@@ -134,3 +134,4 @@ MonoBehaviour:
   - Assets/Scenes/PrototypeScene.unity
   - Assets/Scenes/MainMenu/MainMenu.unity
   - Assets/ThirdParty/Feel/MMTools/Core/MMSceneLoading/LoadingScreens/LoadingScreen.unity
+  - Assets/Scenes/SplashScreen.unity

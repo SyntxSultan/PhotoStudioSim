@@ -6,12 +6,16 @@ using UnityEngine.Localization;
 public class CustomerController : MonoBehaviour, IInteractable
 {
     [SerializeField] private LocalizedString interactHint;
+    [SerializeField] private LocalizedString interactName;
+    
     public LocalizedString InteractHint => interactHint;
+    public LocalizedString InteractName => interactName;
+
     public bool CanInteract => PlayerItemHolder.Instance != null
-        && PlayerItemHolder.Instance.IsHoldingItem
-        && PlayerItemHolder.Instance.CurrentItem is ItemEnvelope
-        && reservedServiceTable != null
-        && !serviceCompleted;
+                               && PlayerItemHolder.Instance.IsHoldingItem
+                               && PlayerItemHolder.Instance.CurrentItem is ItemEnvelope
+                               && reservedServiceTable != null
+                               && !serviceCompleted;
 
     
     [SerializeField] private NavMeshAgent navMeshAgent;
