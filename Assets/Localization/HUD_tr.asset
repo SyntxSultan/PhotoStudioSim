@@ -38,6 +38,10 @@ MonoBehaviour:
     m_Localized: "Fare Tekerle\u011Fi ile Yak\u0131nla\u015Ft\u0131r"
     m_Metadata:
       m_Items: []
+  - m_Id: 29702360820342784
+    m_Localized: Odaklan
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []

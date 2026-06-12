@@ -23,8 +23,6 @@ public class ItemCamera : BasePickableItem, IComplexUsable, IStorable
     [SerializeField] private float normalFov = 50; 
     
     [SerializeField] private Vector3 focusOnCameraLocalPosition;
-    private bool wasRightButtonPressed = false;
-    private float currentFOV;
 
     [Header("Photo Settings")]
     [Tooltip("Saved photo resolution.")]
@@ -36,19 +34,21 @@ public class ItemCamera : BasePickableItem, IComplexUsable, IStorable
     [Header("Sound / Effect")]
     [SerializeField] private MMF_Player photoTakenEffects;
     
-    [Header("Flash")]
-    [SerializeField] private bool useFlash = true;
-
+    private bool useFlash = true;
+    private bool wasRightButtonPressed;
+    private float currentFOV;
     private readonly List<Texture2D> localPhotos = new();
     private bool isHeld;
     
     [Header("Input References")]
     [SerializeField] private InputActionReference shootAction;
+    [SerializeField] private InputActionReference focusAction;
     [SerializeField] private InputActionReference toggleFlashAction;
     [SerializeField] private InputActionReference uploadPhotosAction;
 
     [Header("Localization Hints")]
     [SerializeField] private LocalizedString shootHint;
+    [SerializeField] private LocalizedString focusHint;
     [SerializeField] private LocalizedString toggleFlashHint;
     [SerializeField] private LocalizedString uploadPhotosHint;
 
@@ -79,43 +79,33 @@ public class ItemCamera : BasePickableItem, IComplexUsable, IStorable
         var deleteInteract = new ItemInteraction(uploadPhotosAction, uploadPhotosHint);
         deleteInteract.OnPerformed += ctx => TransferToComputer();
         interactions.Add(deleteInteract);
+        
+        var focusInteract = new ItemInteraction(focusAction, focusHint);
+        focusInteract.OnPerformed += ctx => HandleCameraFocus();
+        interactions.Add(focusInteract);
     }
 
     private void Update()
     {
         if (!isHeld) return;
-        bool isRightPressed = Mouse.current.rightButton.isPressed;
-
-        if (isRightPressed != wasRightButtonPressed)
-        {
-            if (isRightPressed)
-            {
-                PlayerInteraction.Instance.DisableInteraction();
-                SetLocalPosition(focusOnCameraLocalPosition);
-            }
-            else
-            {
-                PlayerInteraction.Instance.EnableInteraction();
-                SetLocalPosition(ItemData.holdPositionOffset);
-            }
-            
-            wasRightButtonPressed = isRightPressed;
-        }
-
-        //TODO: Import photos from computer
-        if (Keyboard.current.uKey.wasPressedThisFrame)
-        {
-            TransferToComputer();
-        }
-        
-        if (Keyboard.current.numpadMultiplyKey.wasPressedThisFrame)
-        {
-            ToggleFlash();
-        }
-        
         
         HandleZoomInput();
     }
+
+    private void HandleCameraFocus()
+    {
+        wasRightButtonPressed = !wasRightButtonPressed;
+        if (wasRightButtonPressed)
+        {
+            PlayerInteraction.Instance.DisableInteraction();
+            SetLocalPosition(focusOnCameraLocalPosition);
+        }
+        else
+        {
+            PlayerInteraction.Instance.EnableInteraction();
+            SetLocalPosition(ItemData.holdPositionOffset);
+        }
+    } 
 
     private void HandleZoomInput()
     {

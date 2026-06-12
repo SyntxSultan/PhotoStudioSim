@@ -4,6 +4,7 @@ using UnityEngine;
 public class ComputerConnectionUI : MonoBehaviour
 {
     [SerializeField] private RectTransform connectionPanel;
+    private const float animationDuration = 0.8f;
 
     private void Start()
     {
@@ -14,14 +15,14 @@ public class ComputerConnectionUI : MonoBehaviour
     {
         connectionPanel.gameObject.SetActive(true);
         DOTween.Sequence().Append(
-            connectionPanel.DOAnchorPosY(0f, 250f).SetEase(Ease.OutBack)
+            connectionPanel.DOAnchorPosY(0f, animationDuration).SetEase(Ease.OutBack)
             );
     }
 
     public void HideConnectionPanel()
     {
         DOTween.Sequence().Append(
-            connectionPanel.DOAnchorPosY(-500f, 250f).SetEase(Ease.InBack)
+            connectionPanel.DOAnchorPosY(-500f, animationDuration).SetEase(Ease.InBack)
             ).OnComplete(() => connectionPanel.gameObject.SetActive(false));
     }
 }

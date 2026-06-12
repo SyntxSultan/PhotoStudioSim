@@ -126,12 +126,13 @@ public class PlayerItemHolder : MonoBehaviour
 
         UnbindInteractions();
 
-        currentItem.PrepareForStorage(); // Hold point'ten ayır, fizik koru
+        var detachedItem = currentItem;
+        currentItem.PrepareForStorage();
 
-        currentItem   = null;
+        currentItem = null;
         currentComplexUsable = null;
         OnHeldItemChanged?.Invoke(false, null);
-        return currentItem;
+        return detachedItem;
     }
 
     private void Drop()

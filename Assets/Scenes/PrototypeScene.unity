@@ -436,8 +436,14 @@ MonoBehaviour:
   interactionItemPrefab: {fileID: 5561267829844934793, guid: 9ddf54dc6570f574fa0f3208c4457328, type: 3}
   containerParent: {fileID: 1188940404}
   actionIcons:
+  - actionReference: {fileID: -3353277399908762951, guid: 02b507ec42b0299459d34dc80783d6be, type: 3}
+    icon: {fileID: 21300000, guid: fe860538a29b02a47b71ce58caad0abb, type: 3}
+  - actionReference: {fileID: 6197842054747241921, guid: 02b507ec42b0299459d34dc80783d6be, type: 3}
+    icon: {fileID: 21300000, guid: c22dbd4d29296cb43b631c46e713ea56, type: 3}
   - actionReference: {fileID: 5641954596446281963, guid: 02b507ec42b0299459d34dc80783d6be, type: 3}
-    icon: {fileID: 21300000, guid: 2baee4408f7047848943c6b4610a7008, type: 3}
+    icon: {fileID: 21300000, guid: 8214241189340c649adc2abf1158c403, type: 3}
+  - actionReference: {fileID: -5235683820029826843, guid: 02b507ec42b0299459d34dc80783d6be, type: 3}
+    icon: {fileID: 21300000, guid: b65e2908c71401240a89c6470fae686d, type: 3}
 --- !u!224 &124338077 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 6781771355310053254, guid: 58941c6fde1fa714c8ab929e4b4eda4c, type: 3}
@@ -16392,7 +16398,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7501264843562473260, guid: 16a86fc9baa87fa4691df2e469d49218, type: 3}
       propertyPath: m_fontColor32.rgba
-      value: 4293980400
+      value: 854651120
       objectReference: {fileID: 0}
     - target: {fileID: 7601599589747690872, guid: 16a86fc9baa87fa4691df2e469d49218, type: 3}
       propertyPath: m_AnchorMax.y
@@ -17884,6 +17890,10 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3077581064403022476, guid: def311ebe22efe34cb424466dae9b570, type: 3}
+      propertyPath: focusAction
+      value: 
+      objectReference: {fileID: -3353277399908762951, guid: 02b507ec42b0299459d34dc80783d6be, type: 3}
+    - target: {fileID: 3077581064403022476, guid: def311ebe22efe34cb424466dae9b570, type: 3}
       propertyPath: shootAction
       value: 
       objectReference: {fileID: 6197842054747241921, guid: 02b507ec42b0299459d34dc80783d6be, type: 3}
@@ -17904,12 +17914,20 @@ PrefabInstance:
       value: 
       objectReference: {fileID: -5235683820029826843, guid: 02b507ec42b0299459d34dc80783d6be, type: 3}
     - target: {fileID: 3077581064403022476, guid: def311ebe22efe34cb424466dae9b570, type: 3}
+      propertyPath: focusHint.m_TableEntryReference.m_KeyId
+      value: 29702360820342784
+      objectReference: {fileID: 0}
+    - target: {fileID: 3077581064403022476, guid: def311ebe22efe34cb424466dae9b570, type: 3}
       propertyPath: shootHint.m_TableEntryReference.m_KeyId
       value: 15535035903234048
       objectReference: {fileID: 0}
     - target: {fileID: 3077581064403022476, guid: def311ebe22efe34cb424466dae9b570, type: 3}
       propertyPath: toggleFlashHint.m_TableEntryReference.m_KeyId
       value: 15535142270783488
+      objectReference: {fileID: 0}
+    - target: {fileID: 3077581064403022476, guid: def311ebe22efe34cb424466dae9b570, type: 3}
+      propertyPath: focusHint.m_TableReference.m_TableCollectionName
+      value: GUID:196ce7f8933b5444b9d2f0b279bf144e
       objectReference: {fileID: 0}
     - target: {fileID: 3077581064403022476, guid: def311ebe22efe34cb424466dae9b570, type: 3}
       propertyPath: shootHint.m_TableReference.m_TableCollectionName

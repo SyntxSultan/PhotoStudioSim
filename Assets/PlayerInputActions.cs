@@ -521,6 +521,15 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Focus"",
+                    ""type"": ""Button"",
+                    ""id"": ""c75e9093-c4e6-427b-9e55-8db8a11fd362"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -556,6 +565,17 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                     ""action"": ""UploadPhotos"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""a6737497-9d0c-43e7-801f-290272fc73ae"",
+                    ""path"": ""<Mouse>/rightButton"",
+                    ""interactions"": ""Press(behavior=2)"",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Focus"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -581,6 +601,7 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         m_Camera_Shoot = m_Camera.FindAction("Shoot", throwIfNotFound: true);
         m_Camera_ToogleFlash = m_Camera.FindAction("ToogleFlash", throwIfNotFound: true);
         m_Camera_UploadPhotos = m_Camera.FindAction("UploadPhotos", throwIfNotFound: true);
+        m_Camera_Focus = m_Camera.FindAction("Focus", throwIfNotFound: true);
     }
 
     ~@PlayerInputActions()
@@ -946,6 +967,7 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
     private readonly InputAction m_Camera_Shoot;
     private readonly InputAction m_Camera_ToogleFlash;
     private readonly InputAction m_Camera_UploadPhotos;
+    private readonly InputAction m_Camera_Focus;
     /// <summary>
     /// Provides access to input actions defined in input action map "Camera".
     /// </summary>
@@ -969,6 +991,10 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         /// Provides access to the underlying input action "Camera/UploadPhotos".
         /// </summary>
         public InputAction @UploadPhotos => m_Wrapper.m_Camera_UploadPhotos;
+        /// <summary>
+        /// Provides access to the underlying input action "Camera/Focus".
+        /// </summary>
+        public InputAction @Focus => m_Wrapper.m_Camera_Focus;
         /// <summary>
         /// Provides access to the underlying input action map instance.
         /// </summary>
@@ -1004,6 +1030,9 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
             @UploadPhotos.started += instance.OnUploadPhotos;
             @UploadPhotos.performed += instance.OnUploadPhotos;
             @UploadPhotos.canceled += instance.OnUploadPhotos;
+            @Focus.started += instance.OnFocus;
+            @Focus.performed += instance.OnFocus;
+            @Focus.canceled += instance.OnFocus;
         }
 
         /// <summary>
@@ -1024,6 +1053,9 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
             @UploadPhotos.started -= instance.OnUploadPhotos;
             @UploadPhotos.performed -= instance.OnUploadPhotos;
             @UploadPhotos.canceled -= instance.OnUploadPhotos;
+            @Focus.started -= instance.OnFocus;
+            @Focus.performed -= instance.OnFocus;
+            @Focus.canceled -= instance.OnFocus;
         }
 
         /// <summary>
@@ -1171,5 +1203,12 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
         void OnUploadPhotos(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "Focus" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnFocus(InputAction.CallbackContext context);
     }
 }

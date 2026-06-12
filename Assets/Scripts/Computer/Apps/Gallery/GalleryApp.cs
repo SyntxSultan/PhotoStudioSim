@@ -34,7 +34,7 @@ namespace SyntaxSultan.ComputerSystem.Apps
 
         protected override void Start()
         {
-            printPopup.OnPrint += StartPrinting;
+            printPopup.OnPrintButtonClicked += StartPrinting;
         }
 
         protected override void OnOpened()

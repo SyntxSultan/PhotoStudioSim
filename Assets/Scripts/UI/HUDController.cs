@@ -40,27 +40,7 @@ public class HUDController : MonoBehaviour
 
     private void OnHeldItemChanged(bool isHoldingItem, BasePickableItem holdingItem)
     {
-        /*if (isHoldingItem)
-        {
-            SetText(heldItemNameText, true, holdingItem.GetItemName());
-            SetText(dropHintText, true, cachedDropHint);
-
-            if (holdingItem.IsUseable)
-            {
-                string useHint = PlayerItemHolder.Instance.GetUseHint().GetLocalizedString();
-                SetText(useHintText, true, useHint);
-            }                
-            else
-            {
-                SetText(useHintText, false);
-            }
-        }
-        else
-        {
-            SetText(heldItemNameText, false);
-            SetText(useHintText, false);
-            SetText(dropHintText, false);
-        }*/
+        //TODO: isholding item show drop hint & show item name
     }
 
     private void OnTimeChanged()

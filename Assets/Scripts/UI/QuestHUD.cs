@@ -22,15 +22,11 @@ public class QuestHUD : MonoBehaviour
     private void Start()
     {
         canvasGroup = questPanel.GetComponent<CanvasGroup>();
-    }
-
-    private void OnEnable()
-    {
         orderManager.OnOrderRegistered += SetQuestDisplay;
         orderManager.OnOrderCompleted += CloseQuestDisplay;
     }
-
-    private void OnDisable()
+    
+    private void OnDestroy()
     {
         orderManager.OnOrderRegistered -= SetQuestDisplay;
         orderManager.OnOrderCompleted -= CloseQuestDisplay;

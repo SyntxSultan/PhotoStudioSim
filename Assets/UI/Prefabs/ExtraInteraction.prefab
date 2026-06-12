@@ -113,7 +113,7 @@ MonoBehaviour:
   fillGradientReverse: 0
   outlineWidth: 2
   outlineColorMode: 1
-  outlineColor: {r: 0.7830189, g: 0.036803886, b: 0, a: 1}
+  outlineColor: {r: 0.9960785, g: 0.5019608, b: 0.08627451, a: 1}
   outlineGradient:
     serializedVersion: 2
     key0: {r: 1, g: 1, b: 1, a: 1}
@@ -231,10 +231,10 @@ MonoBehaviour:
   embeddedShaderBypass: {fileID: 4800000, guid: 8e81e07a8d5c24442b42d43fb1feb068, type: 3}
   graphicFoldout: 1
   fillFoldout: 1
-  outlineFoldout: 0
-  cornerRadiusFoldout: 0
-  innerShadowFoldout: 0
-  outerShadowFoldout: 0
+  outlineFoldout: 1
+  cornerRadiusFoldout: 1
+  innerShadowFoldout: 1
+  outerShadowFoldout: 1
 --- !u!114 &1950915569907701183
 MonoBehaviour:
   m_ObjectHideFlags: 0
