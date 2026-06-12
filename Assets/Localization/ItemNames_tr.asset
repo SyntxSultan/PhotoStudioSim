@@ -38,6 +38,10 @@ MonoBehaviour:
     m_Localized: "Monit\xF6r"
     m_Metadata:
       m_Items: []
+  - m_Id: 18223631627706368
+    m_Localized: "Yaz\u0131c\u0131"
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []

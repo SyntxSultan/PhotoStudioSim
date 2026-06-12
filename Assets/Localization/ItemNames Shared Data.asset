@@ -35,6 +35,10 @@ MonoBehaviour:
     m_Key: item.monitor
     m_Metadata:
       m_Items: []
+  - m_Id: 18223631627706368
+    m_Key: item.paperprinter
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:

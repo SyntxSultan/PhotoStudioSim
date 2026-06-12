@@ -4,6 +4,8 @@ using UnityEngine.Localization;
 
 public class PrintedPaper : BasePickableItem, IInteractable
 {
+    [SerializeField] private LocalizedString interactHint;
+    
     [SerializeField] private MeshRenderer paperRenderer;
     /// <summary>Birden fazla materyal varsa resmin uygulanacağı materyal indexi.</summary>
     [SerializeField] private int materialIndex = 0;
@@ -11,8 +13,8 @@ public class PrintedPaper : BasePickableItem, IInteractable
     private PrintSettings settings;
     private Texture2D printedTexture;
 
-    public LocalizedString InteractHint => Definition.interactHint;
-    public LocalizedString InteractName => Definition.itemName;
+    public LocalizedString InteractHint => interactHint;
+    public LocalizedString InteractName => ItemData.itemName;
 
     public bool CanInteract => PlayerItemHolder.Instance != null
                                && PlayerItemHolder.Instance.IsHoldingItem
@@ -173,20 +175,6 @@ public class PrintedPaper : BasePickableItem, IInteractable
             mat.mainTextureScale  = new Vector2(ratio, 1f);
             mat.mainTextureOffset = new Vector2((1f - ratio) * 0.5f, 0f);
         }
-    }
-
-    // ── Physics ───────────────────────────────────────────────
-
-    public void DisablePhysics()
-    {
-        SetCollidersActive(false);
-        Rb.isKinematic = true;
-    }
-
-    public void EnablePhysics()
-    {
-        SetCollidersActive(true);
-        Rb.isKinematic = false;
     }
 
     public void Interact()

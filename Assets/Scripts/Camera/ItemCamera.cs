@@ -7,10 +7,8 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.Localization;
 
-public class ItemCamera : BasePickableItem, IUsable, IStorable
+public class ItemCamera : BasePickableItem, IComplexUsable, IStorable
 {
-    public LocalizedString UseHint => Definition.useHint;
-    
     [Header("Lens")]
     [SerializeField] private Camera lensCamera;
     [Tooltip("Must be same RenderTexture with lensCamera.targetTexture.")]
@@ -43,11 +41,44 @@ public class ItemCamera : BasePickableItem, IUsable, IStorable
 
     private readonly List<Texture2D> localPhotos = new();
     private bool isHeld;
+    
+    [Header("Input References")]
+    [SerializeField] private InputActionReference shootAction;
+    [SerializeField] private InputActionReference toggleFlashAction;
+    [SerializeField] private InputActionReference uploadPhotosAction;
+
+    [Header("Localization Hints")]
+    [SerializeField] private LocalizedString shootHint;
+    [SerializeField] private LocalizedString toggleFlashHint;
+    [SerializeField] private LocalizedString uploadPhotosHint;
+
+    private List<ItemInteraction> interactions;
 
     protected override void Awake()
     {
         base.Awake();
+        InitializeInteractions();
         currentFOV = lensCamera.fieldOfView;
+    }
+    
+    private void InitializeInteractions()
+    {
+        interactions = new List<ItemInteraction>();
+
+        // 1. Fotoğraf Çekme Etkileşimi
+        var shootInteract = new ItemInteraction(shootAction, shootHint);
+        shootInteract.OnPerformed += ctx => TakePhoto();
+        interactions.Add(shootInteract);
+
+        // 2. Ayar Değiştirme Etkileşimi
+        var settingsInteract = new ItemInteraction(toggleFlashAction, toggleFlashHint);
+        settingsInteract.OnPerformed += ctx => ToggleFlash();
+        interactions.Add(settingsInteract);
+
+        // 3. Fotoğraf Silme Etkileşimi
+        var deleteInteract = new ItemInteraction(uploadPhotosAction, uploadPhotosHint);
+        deleteInteract.OnPerformed += ctx => TransferToComputer();
+        interactions.Add(deleteInteract);
     }
 
     private void Update()
@@ -65,7 +96,7 @@ public class ItemCamera : BasePickableItem, IUsable, IStorable
             else
             {
                 PlayerInteraction.Instance.EnableInteraction();
-                SetLocalPosition(Definition.holdPositionOffset);
+                SetLocalPosition(ItemData.holdPositionOffset);
             }
             
             wasRightButtonPressed = isRightPressed;
@@ -110,22 +141,10 @@ public class ItemCamera : BasePickableItem, IUsable, IStorable
     public void TransferToComputer()
     {
         if (localPhotos.Count == 0) return;
-        
 
         CameraStorage.Instance.Upload(localPhotos);
         //int count = localPhotos.Count;
         localPhotos.Clear();
-    }
-
-    public void OnUseStart()
-    {
-        if (!isHeld) return;
-        TakePhoto();
-    }
-
-    public void OnUseStop()
-    {
-        
     }
     
     protected override void OnPickedUp()
@@ -196,7 +215,11 @@ public class ItemCamera : BasePickableItem, IUsable, IStorable
             Debug.LogError($"Save failed: {e.Message}");
         }
     }
-
+    
     public bool CanStore => true;
-    public Sprite Icon => Definition.icon;
+    public Sprite Icon => ItemData.icon;
+    public List<ItemInteraction> GetInteractions()
+    {
+        return interactions;
+    }
 }

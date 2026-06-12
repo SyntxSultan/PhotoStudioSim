@@ -23,7 +23,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 1799091983339520
-    m_Localized: 'E: Al'
+    m_Localized: Al
     m_Metadata:
       m_Items: []
   - m_Id: 15535035903234048
@@ -36,10 +36,6 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 15535301658529792
     m_Localized: "Fare Tekerle\u011Fi ile Yak\u0131nla\u015Ft\u0131r"
-    m_Metadata:
-      m_Items: []
-  - m_Id: 28191051560112128
-    m_Localized: "E: Etkile\u015F"
     m_Metadata:
       m_Items: []
   references:

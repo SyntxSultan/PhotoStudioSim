@@ -137,10 +137,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 24a442b9fa6d77741a797bc986541ff4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PrintedPaper
-  definition: {fileID: 11400000, guid: 5efe446b404ac7846be23bb863c6b820, type: 2}
+  itemData: {fileID: 11400000, guid: 5efe446b404ac7846be23bb863c6b820, type: 2}
   throwForceMultiplier: 1
+  interactHint:
+    m_TableReference:
+      m_TableCollectionName: GUID:597e0ad3f69743d459ceb0655f8bcc9b
+    m_TableEntryReference:
+      m_KeyId: 6593315492712448
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
   paperRenderer: {fileID: 8321626459528593150}
   materialIndex: 0
+  references:
+    version: 2
+    RefIds: []
 --- !u!54 &3547298831038300803
 Rigidbody:
   m_ObjectHideFlags: 0

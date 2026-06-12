@@ -38,6 +38,10 @@ MonoBehaviour:
     m_Localized: Monitor
     m_Metadata:
       m_Items: []
+  - m_Id: 18223631627706368
+    m_Localized: Printer
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []

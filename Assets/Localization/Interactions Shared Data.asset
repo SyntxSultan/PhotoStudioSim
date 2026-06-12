@@ -16,23 +16,23 @@ MonoBehaviour:
   m_TableCollectionNameGuidString: 597e0ad3f69743d459ceb0655f8bcc9b
   m_Entries:
   - m_Id: 15516160000
-    m_Key: printer.interact
+    m_Key: interact.printer
     m_Metadata:
       m_Items: []
   - m_Id: 58407112704
-    m_Key: computercase.interact
+    m_Key: interact.computercase
     m_Metadata:
       m_Items: []
   - m_Id: 102824792064
-    m_Key: computermonitor.interact
+    m_Key: interact.computermonitor
     m_Metadata:
       m_Items: []
   - m_Id: 523597052760064
-    m_Key: customer.completeOrder
+    m_Key: interact.customer.completeOrder
     m_Metadata:
       m_Items: []
   - m_Id: 6573169407545344
-    m_Key: envelopestack.Spawn
+    m_Key: interact.envelopestack.Spawn
     m_Metadata:
       m_Items: []
   - m_Id: 6593315492712448
