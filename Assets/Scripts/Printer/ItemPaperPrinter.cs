@@ -69,7 +69,7 @@ public class ItemPaperPrinter : MonoBehaviour, IInteractable, INetworkDevice
             PrintedPaper spawnedPaper = Instantiate(paperPrefabToSpawn, paperSpawnPoint.position, paperSpawnPoint.rotation);
             
             spawnedPaper.Setup(imageToPrint, settings);
-            spawnedPaper.DisablePhysics();
+            spawnedPaper.TogglePhysics(false);
             
             float ppm = settings.isColored ? colorPagePerMinute : blackPagePerMinute;
             float printDuration = 60f / ppm;
@@ -99,7 +99,7 @@ public class ItemPaperPrinter : MonoBehaviour, IInteractable, INetworkDevice
         }
 
         paper.transform.position = endPos;
-        paper.EnablePhysics();
+        paper.TogglePhysics(true);
         isPrinting = false;
     }
 }

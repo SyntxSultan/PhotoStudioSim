@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using SyntaxSultan.InventoryModule;
 using UnityEngine;
 
 [System.Serializable]
@@ -8,7 +9,7 @@ public struct StoredPhoto
     public PrintSettings settings;
 }
 
-public class ItemEnvelope : BasePickableItem
+public class ItemEnvelope : BasePickableItem, IStorable
 {
     [SerializeField] private int maxPhotoCount = 5;
 
@@ -33,4 +34,7 @@ public class ItemEnvelope : BasePickableItem
         paper.gameObject.SetActive(false);
         return true;
     }
+
+    public bool CanStore => true;
+    public Sprite Icon => ItemData.icon;
 }

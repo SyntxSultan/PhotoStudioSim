@@ -1,4 +1,6 @@
 using UnityEngine;
+using UnityEngine.Serialization;
+
 /// <summary>
 /// Yerden alınabilen tüm itemlerin temel sınıfı.
 /// 
@@ -10,14 +12,14 @@ using UnityEngine;
 [RequireComponent(typeof(Rigidbody))]
 public abstract class BasePickableItem : MonoBehaviour, IPickable
 {
-    [SerializeField] private ItemDefinition definition;
+    [FormerlySerializedAs("definition")] 
+    [SerializeField] private ItemDefinition itemData;
     [SerializeField] private float throwForceMultiplier = 1f;
 
-    public UnityEngine.Localization.LocalizedString GetItemName() => definition.itemName;
-    public bool IsUseable => definition.isUseable;
+    public UnityEngine.Localization.LocalizedString GetItemName() => itemData.itemName;
     public bool IsHeld { get; private set; }
     
-    protected ItemDefinition Definition => definition;
+    protected ItemDefinition ItemData => itemData;
     protected Rigidbody Rb { get; private set; }
     private Collider[] colliders;
 
@@ -25,12 +27,12 @@ public abstract class BasePickableItem : MonoBehaviour, IPickable
     /// <summary>ItemDefinition'ı runtime'da set etmek için (spawn edilen itemlar).</summary>
     public void Initialize(ItemDefinition def)
     {
-        definition = def;
+        itemData = def;
     }
 
     protected virtual void Awake()
     {
-        if (!definition)
+        if (!itemData)
         {
             Debug.LogError($"[BasePickableItem] {gameObject.name} için ItemDefinition atanmamış!");
             return;
@@ -48,18 +50,12 @@ public abstract class BasePickableItem : MonoBehaviour, IPickable
     public void OnPickup(Transform holdPoint)
     {
         IsHeld = true;
-
-        // Disable Physics
-        Rb.linearVelocity = Vector3.zero;
-        Rb.angularVelocity = Vector3.zero;
-        Rb.isKinematic = true;
-
-        SetCollidersActive(false);
+        TogglePhysics(false);
 
         // Join holdpoint
         transform.SetParent(holdPoint);
-        SetLocalPosition(definition.holdPositionOffset);
-        transform.localRotation = Quaternion.Euler(definition.holdRotationOffset);
+        SetLocalPosition(itemData.holdPositionOffset);
+        transform.localRotation = Quaternion.Euler(itemData.holdRotationOffset);
 
         OnPickedUp();
     }
@@ -67,26 +63,30 @@ public abstract class BasePickableItem : MonoBehaviour, IPickable
     public void OnDrop(Vector3 throwDirection, float throwForce)
     {
         IsHeld = false;
+        transform.SetParent(null);        // Remove from holdpoint
+        TogglePhysics(true);
 
-        // Remove from holdpoint
-        transform.SetParent(null);
-
-        // Enable Physics
-        Rb.isKinematic = false;
-
-        SetCollidersActive(true);
-            
-        // Apply throw force
         if (throwForce > 0f)
+        {
             Rb.AddForce(throwDirection * throwForce * throwForceMultiplier, ForceMode.Impulse);
+        }
 
         OnDropped(); 
     }
-
-    protected void SetCollidersActive(bool active)
+    
+    public void TogglePhysics(bool isEnabled)
     {
+        if (!isEnabled)
+        {
+            Rb.linearVelocity = Vector3.zero;
+            Rb.angularVelocity = Vector3.zero;
+        }
+        Rb.isKinematic = !isEnabled;
+
         foreach (var col in colliders)
-            col.enabled = active;
+        {
+            if (col != null) col.enabled = isEnabled;
+        }
     }
 
     /// <summary>Item eline alındıktan hemen sonra çağrılır.</summary>

@@ -17,7 +17,7 @@ public class PrintPopup : MonoBehaviour
     [SerializeField] private Button printButton;
     [SerializeField] private Button cancelButton;
     
-    public event Action<PrintSettings> OnPrint;
+    public event Action<PrintSettings> OnPrintButtonClicked;
     
     private List<INetworkDevice> availablePrinters = new List<INetworkDevice>();
     private List<PrintQuality> availableQualities = new();
@@ -30,6 +30,14 @@ public class PrintPopup : MonoBehaviour
         
         printButton.onClick.AddListener(PrintButtonClicked);
         cancelButton.onClick.AddListener(ClosePrintPopup);
+        printerSelectDropdown.onValueChanged.AddListener(OnPrinterSelectionChanged);
+    }
+
+    private void OnDestroy()
+    {
+        printButton.onClick.RemoveListener(PrintButtonClicked);
+        cancelButton.onClick.RemoveListener(ClosePrintPopup);
+        printerSelectDropdown.onValueChanged.RemoveListener(OnPrinterSelectionChanged);
     }
 
     private void OnEnable()
@@ -105,8 +113,13 @@ public class PrintPopup : MonoBehaviour
 
     private void PrintButtonClicked()
     {
-        OnPrint?.Invoke(GeneratePrintSettings());
+        OnPrintButtonClicked?.Invoke(GeneratePrintSettings());
         ClosePrintPopup();
+    }
+    
+    private void ClosePrintPopup()
+    {
+        gameObject.SetActive(false);
     }
 
     private PrintSettings GeneratePrintSettings()
@@ -134,18 +147,10 @@ public class PrintPopup : MonoBehaviour
 
     // --------Helpers---------
     
-    private T ParseDropdownValue<T>(TMPro.TMP_Dropdown dropdown) where T : struct
+    private T ParseDropdownValue<T>(TMP_Dropdown dropdown) where T : struct
     {
-        if (Enum.TryParse(dropdown.value.ToString(), out T result))
-        {
-            return result;
-        }
-        return default;
-    }
-    
-    private void ClosePrintPopup()
-    {
-        gameObject.SetActive(false);
+        string enumName = Enum.GetNames(typeof(T))[dropdown.value];
+        return Enum.TryParse(enumName, out T result) ? result : default;
     }
 
     private void PopulateDropdownItems(TMP_Dropdown dropdown, Type enumType)

@@ -1,4 +1,3 @@
-using System;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -13,7 +12,7 @@ public class CrosshairController : MonoBehaviour
     [Header("Crosshair Scale Animation")]
     [SerializeField] private float normalSize = 32f;
     [SerializeField] private float highlightSize = 42f;
-    [SerializeField] private float sizeSpeed = 10f;
+    [SerializeField, Range(0f, 0.99f)]private float sizeSpeed = 10f;
 
     private bool isCrosshairEnabled = true;
     private PlayerInteraction interaction;
@@ -72,7 +71,6 @@ public class CrosshairController : MonoBehaviour
             return;
         }
 
-        // Lerp with frame-rate independent smoothing (recommended)
         float t = 1f - Mathf.Pow(1f - Mathf.Clamp01(sizeSpeed), Time.deltaTime * 60f);
         float newSize = Mathf.Lerp(current, targetSize, t);
 

@@ -35,8 +35,8 @@ MonoBehaviour:
     m_Key: hud.cameraZoom
     m_Metadata:
       m_Items: []
-  - m_Id: 28191051560112128
-    m_Key: hud.interact
+  - m_Id: 29702360820342784
+    m_Key: hud.focusCamera
     m_Metadata:
       m_Items: []
   m_Metadata:

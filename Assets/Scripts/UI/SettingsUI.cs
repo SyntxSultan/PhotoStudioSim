@@ -18,6 +18,7 @@ public class SettingsUI : MonoBehaviour
     [SerializeField] private Dropdown textureQualityDropdown;
     [SerializeField] private Slider fovSlider;
     [SerializeField] private Selector languageDropdown;
+    [SerializeField] private Slider computerScreenDistanceSlider;
 
     private bool isDirty;
     private List<Resolution> filteredResolutions = new List<Resolution>();
@@ -107,6 +108,12 @@ public class SettingsUI : MonoBehaviour
         languageDropdown.onSelectionChanged.AddListener(index => {
             ChangeLanguage(index);
         });
+
+        computerScreenDistanceSlider.onValueChanged.AddListener(val =>
+        {
+            localSettings.computerScreenDistance = val;
+            MarkAsDirty();
+        });
     }
 
     private void UpdateUIElements()
@@ -145,6 +152,7 @@ public class SettingsUI : MonoBehaviour
         globalSettings.textureQuality = localSettings.textureQuality;
         globalSettings.fov = localSettings.fov;
         globalSettings.language = localSettings.language;
+        globalSettings.computerScreenDistance = localSettings.computerScreenDistance;
 
         SettingsManager.Instance.SaveSettings();
         isDirty = false;

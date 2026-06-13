@@ -7,10 +7,8 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.Localization;
 
-public class ItemCamera : BasePickableItem, IUsable, IStorable
+public class ItemCamera : BasePickableItem, IComplexUsable, IStorable
 {
-    public LocalizedString UseHint => Definition.useHint;
-    
     [Header("Lens")]
     [SerializeField] private Camera lensCamera;
     [Tooltip("Must be same RenderTexture with lensCamera.targetTexture.")]
@@ -25,8 +23,6 @@ public class ItemCamera : BasePickableItem, IUsable, IStorable
     [SerializeField] private float normalFov = 50; 
     
     [SerializeField] private Vector3 focusOnCameraLocalPosition;
-    private bool wasRightButtonPressed = false;
-    private float currentFOV;
 
     [Header("Photo Settings")]
     [Tooltip("Saved photo resolution.")]
@@ -38,53 +34,78 @@ public class ItemCamera : BasePickableItem, IUsable, IStorable
     [Header("Sound / Effect")]
     [SerializeField] private MMF_Player photoTakenEffects;
     
-    [Header("Flash")]
-    [SerializeField] private bool useFlash = true;
-
+    private bool useFlash = true;
+    private bool wasRightButtonPressed;
+    private float currentFOV;
     private readonly List<Texture2D> localPhotos = new();
     private bool isHeld;
+    
+    [Header("Input References")]
+    [SerializeField] private InputActionReference shootAction;
+    [SerializeField] private InputActionReference focusAction;
+    [SerializeField] private InputActionReference toggleFlashAction;
+    [SerializeField] private InputActionReference uploadPhotosAction;
+
+    [Header("Localization Hints")]
+    [SerializeField] private LocalizedString shootHint;
+    [SerializeField] private LocalizedString focusHint;
+    [SerializeField] private LocalizedString toggleFlashHint;
+    [SerializeField] private LocalizedString uploadPhotosHint;
+
+    private List<ItemInteraction> interactions;
 
     protected override void Awake()
     {
         base.Awake();
+        InitializeInteractions();
         currentFOV = lensCamera.fieldOfView;
+    }
+    
+    private void InitializeInteractions()
+    {
+        interactions = new List<ItemInteraction>();
+
+        // 1. Fotoğraf Çekme Etkileşimi
+        var shootInteract = new ItemInteraction(shootAction, shootHint);
+        shootInteract.OnPerformed += ctx => TakePhoto();
+        interactions.Add(shootInteract);
+
+        // 2. Ayar Değiştirme Etkileşimi
+        var settingsInteract = new ItemInteraction(toggleFlashAction, toggleFlashHint);
+        settingsInteract.OnPerformed += ctx => ToggleFlash();
+        interactions.Add(settingsInteract);
+
+        // 3. Fotoğraf Silme Etkileşimi
+        var deleteInteract = new ItemInteraction(uploadPhotosAction, uploadPhotosHint);
+        deleteInteract.OnPerformed += ctx => TransferToComputer();
+        interactions.Add(deleteInteract);
+        
+        var focusInteract = new ItemInteraction(focusAction, focusHint);
+        focusInteract.OnPerformed += ctx => HandleCameraFocus();
+        interactions.Add(focusInteract);
     }
 
     private void Update()
     {
         if (!isHeld) return;
-        bool isRightPressed = Mouse.current.rightButton.isPressed;
-
-        if (isRightPressed != wasRightButtonPressed)
-        {
-            if (isRightPressed)
-            {
-                PlayerInteraction.Instance.DisableInteraction();
-                SetLocalPosition(focusOnCameraLocalPosition);
-            }
-            else
-            {
-                PlayerInteraction.Instance.EnableInteraction();
-                SetLocalPosition(Definition.holdPositionOffset);
-            }
-            
-            wasRightButtonPressed = isRightPressed;
-        }
-
-        //TODO: Import photos from computer
-        if (Keyboard.current.uKey.wasPressedThisFrame)
-        {
-            TransferToComputer();
-        }
-        
-        if (Keyboard.current.numpadMultiplyKey.wasPressedThisFrame)
-        {
-            ToggleFlash();
-        }
-        
         
         HandleZoomInput();
     }
+
+    private void HandleCameraFocus()
+    {
+        wasRightButtonPressed = !wasRightButtonPressed;
+        if (wasRightButtonPressed)
+        {
+            PlayerInteraction.Instance.DisableInteraction();
+            SetLocalPosition(focusOnCameraLocalPosition);
+        }
+        else
+        {
+            PlayerInteraction.Instance.EnableInteraction();
+            SetLocalPosition(ItemData.holdPositionOffset);
+        }
+    } 
 
     private void HandleZoomInput()
     {
@@ -110,22 +131,10 @@ public class ItemCamera : BasePickableItem, IUsable, IStorable
     public void TransferToComputer()
     {
         if (localPhotos.Count == 0) return;
-        
 
         CameraStorage.Instance.Upload(localPhotos);
         //int count = localPhotos.Count;
         localPhotos.Clear();
-    }
-
-    public void OnUseStart()
-    {
-        if (!isHeld) return;
-        TakePhoto();
-    }
-
-    public void OnUseStop()
-    {
-        
     }
     
     protected override void OnPickedUp()
@@ -196,7 +205,11 @@ public class ItemCamera : BasePickableItem, IUsable, IStorable
             Debug.LogError($"Save failed: {e.Message}");
         }
     }
-
+    
     public bool CanStore => true;
-    public Sprite Icon => Definition.icon;
+    public Sprite Icon => ItemData.icon;
+    public List<ItemInteraction> GetInteractions()
+    {
+        return interactions;
+    }
 }

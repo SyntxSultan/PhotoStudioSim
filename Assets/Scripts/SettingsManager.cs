@@ -10,6 +10,7 @@ public class SettingsManager : MonoBehaviour
     public Settings CurrentSettings { get; private set; }
     
     public static event Action<float> OnFOVChanged;
+    public static event Action<float> OnComputerScreenDistanceChanged;
 
     private string filePath;
 
@@ -80,19 +81,21 @@ public class SettingsManager : MonoBehaviour
             useVSync = false,
             textureQuality = 0,
             fov = 60f,
-            language = 0
+            language = 0,
+            computerScreenDistance = 33f
         };
         
         SaveSettings();
     }
 
-    public void ApplyAllSettings()
+    private void ApplyAllSettings()
     {
         Screen.SetResolution(CurrentSettings.resolutionWidth, CurrentSettings.resolutionHeight, CurrentSettings.isFullscreen);
         QualitySettings.globalTextureMipmapLimit = CurrentSettings.textureQuality;
         QualitySettings.vSyncCount = CurrentSettings.useVSync ? 1 : 0;
         
         OnFOVChanged?.Invoke(CurrentSettings.fov);
+        OnComputerScreenDistanceChanged?.Invoke(CurrentSettings.computerScreenDistance);
         ApplyLanguage(CurrentSettings.language);
     }
     

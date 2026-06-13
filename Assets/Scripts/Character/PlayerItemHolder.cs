@@ -17,21 +17,19 @@ using UnityEngine.Localization;
 public class PlayerItemHolder : MonoBehaviour
 {
     public static PlayerItemHolder Instance { get; private set; }
-
-    public event Action<bool, BasePickableItem> OnHeldItemChanged;
-
+    
+    [Header("References")]
     [SerializeField] private ItemSway itemSway;
-
     [SerializeField] private Transform holdPoint;
     [SerializeField] private float dropForce = 2f;
 
+    public event Action<bool, BasePickableItem> OnHeldItemChanged;
+    
     public bool IsHoldingItem => currentItem != null;
     public BasePickableItem CurrentItem => currentItem;
-    public LocalizedString GetUseHint() => currentUsable.UseHint;
 
     private BasePickableItem currentItem;
-    private IUsable currentUsable;
-    private bool isUsingItem;
+    private IComplexUsable currentComplexUsable;
     private Camera mainCamera;
 
     private void Awake()
@@ -49,28 +47,42 @@ public class PlayerItemHolder : MonoBehaviour
         mainCamera = Camera.main;
         InputManager.Instance.OnDropKeyPressed += Drop;
     }
-
-    private void Update()
+    
+    private void BindInteractions()
     {
-        HandleUseInput();
-    }
+        if (currentComplexUsable == null || currentComplexUsable.GetInteractions() == null) return;
 
-    private void HandleUseInput()
-    {
-        if (!IsHoldingItem || currentUsable == null) return;
-
-        if (InputManager.Instance.GetUseInputDown() && !isUsingItem)
+        foreach (var interaction in currentComplexUsable.GetInteractions())
         {
-            isUsingItem = true;
-            currentUsable.OnUseStart();
-        }
+            if (interaction.ActionReference == null) continue;
 
-        if (InputManager.Instance.GetUseInputUp() && isUsingItem)
-        {
-            isUsingItem = false;
-            currentUsable.OnUseStop();
+            var action = interaction.ActionReference.action;
+            action.Enable();
+
+            if (interaction.OnStarted != null) action.started += interaction.OnStarted;
+            if (interaction.OnPerformed != null) action.performed += interaction.OnPerformed;
+            if (interaction.OnCanceled != null) action.canceled += interaction.OnCanceled;
         }
     }
+
+    private void UnbindInteractions()
+    {
+        if (currentComplexUsable == null || currentComplexUsable.GetInteractions() == null) return;
+
+        foreach (var interaction in currentComplexUsable.GetInteractions())
+        {
+            if (interaction.ActionReference == null) continue;
+
+            var action = interaction.ActionReference.action;
+
+            if (interaction.OnStarted != null) action.started -= interaction.OnStarted;
+            if (interaction.OnPerformed != null) action.performed -= interaction.OnPerformed;
+            if (interaction.OnCanceled != null) action.canceled -= interaction.OnCanceled;
+
+            action.Disable();
+        }
+    }
+    
 
     // ─────────────────────────────────────────────────────────────
     // Public API
@@ -91,10 +103,12 @@ public class PlayerItemHolder : MonoBehaviour
         }
 
         currentItem = item;
-        currentUsable = item as IUsable;
+        currentComplexUsable = item as IComplexUsable;
 
         item.OnPickup(holdPoint);
 
+        BindInteractions();
+        
         OnHeldItemChanged?.Invoke(true, currentItem);
 
         return true;
@@ -110,37 +124,29 @@ public class PlayerItemHolder : MonoBehaviour
     {
         if (!IsHoldingItem) return null;
 
-        if (isUsingItem)
-        {
-            currentUsable?.OnUseStop();
-            isUsingItem = false;
-        }
+        UnbindInteractions();
 
-        var item = currentItem;
-        item.PrepareForStorage(); // Hold point'ten ayır, fizik koru
+        var detachedItem = currentItem;
+        currentItem.PrepareForStorage();
 
-        currentItem   = null;
-        currentUsable = null;
+        currentItem = null;
+        currentComplexUsable = null;
         OnHeldItemChanged?.Invoke(false, null);
-        return item;
+        return detachedItem;
     }
 
     private void Drop()
     {
         if (!IsHoldingItem) return;
 
-        if (isUsingItem)
-        {
-            currentUsable?.OnUseStop();
-            isUsingItem = false;
-        }
+        UnbindInteractions();
 
         Vector3 dropDir = mainCamera ? mainCamera.transform.forward : transform.forward;
 
         currentItem.OnDrop(dropDir, dropForce);
 
         currentItem = null;
-        currentUsable = null;
+        currentComplexUsable = null;
         OnHeldItemChanged?.Invoke(false, null);
     }
 
@@ -148,11 +154,7 @@ public class PlayerItemHolder : MonoBehaviour
     {
         if (currentItem == null) return;
 
-        if (isUsingItem)
-        {
-            currentUsable?.OnUseStop();
-            isUsingItem = false;
-        }
+        UnbindInteractions();
 
         if (currentItem is MonoBehaviour monoBehaviour)
         {
@@ -160,7 +162,7 @@ public class PlayerItemHolder : MonoBehaviour
         }
 
         currentItem = null;
-        currentUsable = null;
+        currentComplexUsable = null;
         OnHeldItemChanged?.Invoke(false, null);
     }
 }

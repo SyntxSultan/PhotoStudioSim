@@ -76,7 +76,7 @@ public class PauseMenuUI : MonoBehaviour
         confirmationPopup.onConfirm.RemoveAllListeners();
         confirmationPopup.SetTitle("Quit to Main Menu");
         confirmationPopup.SetDescription("Are you sure you want to quit to the main menu?\nAny unsaved progress will be lost.");
-        confirmationPopup.onConfirm.AddListener(() => throw new NotImplementedException());
+        confirmationPopup.onConfirm.AddListener(() => UnityEngine.SceneManagement.SceneManager.LoadScene("MainMenu") );
         confirmationPopup.Open();
     }
 }
