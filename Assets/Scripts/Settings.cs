@@ -9,4 +9,5 @@ public class Settings
     public int textureQuality; // 0: Yüksek (Full), 1: Orta (Half), 2: Düşük (Quarter)
     public float fov;
     public int language;
+    public float computerScreenDistance;
 }   

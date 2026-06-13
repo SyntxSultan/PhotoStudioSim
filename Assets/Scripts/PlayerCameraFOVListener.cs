@@ -1,7 +1,7 @@
 using Unity.Cinemachine;
 using UnityEngine;
 
-public class FOVListener : MonoBehaviour
+public class PlayerCameraFOVListener : MonoBehaviour
 {
     private CinemachineCamera targetCamera;
 
