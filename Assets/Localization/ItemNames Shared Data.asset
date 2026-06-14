@@ -39,6 +39,10 @@ MonoBehaviour:
     m_Key: item.paperprinter
     m_Metadata:
       m_Items: []
+  - m_Id: 18842036079022080
+    m_Key: item.usb
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:

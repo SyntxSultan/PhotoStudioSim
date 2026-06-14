@@ -102,7 +102,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 35222107e9a77434c8860ba11b8d8f7f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ItemCamera
-  definition: {fileID: 11400000, guid: 38b0efb1a8896ef46a033cb048093876, type: 2}
+  itemData: {fileID: 11400000, guid: 38b0efb1a8896ef46a033cb048093876, type: 2}
   throwForceMultiplier: 1
   lensCamera: {fileID: 5942438005398057594}
   viewfinderTexture: {fileID: 8400000, guid: bacc56e425cb75e4e8129c7861405e13, type: 2}
@@ -116,7 +116,49 @@ MonoBehaviour:
   photoResolution: {x: 256, y: 256}
   maxLocalPhotos: 10
   photoTakenEffects: {fileID: 4858876816968814287}
-  useFlash: 1
+  shootAction: {fileID: 0}
+  focusAction: {fileID: 0}
+  toggleFlashAction: {fileID: 0}
+  uploadPhotosAction: {fileID: 0}
+  shootHint:
+    m_TableReference:
+      m_TableCollectionName: 
+    m_TableEntryReference:
+      m_KeyId: 0
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  focusHint:
+    m_TableReference:
+      m_TableCollectionName: 
+    m_TableEntryReference:
+      m_KeyId: 0
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  toggleFlashHint:
+    m_TableReference:
+      m_TableCollectionName: 
+    m_TableEntryReference:
+      m_KeyId: 0
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  uploadPhotosHint:
+    m_TableReference:
+      m_TableCollectionName: 
+    m_TableEntryReference:
+      m_KeyId: 0
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  references:
+    version: 2
+    RefIds: []
 --- !u!114 &2457854524965464496
 MonoBehaviour:
   m_ObjectHideFlags: 0
