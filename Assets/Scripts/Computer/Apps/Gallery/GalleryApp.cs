@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.IO;
+using Computer.Apps.Gallery;
 using SyntaxSultan.PrinterSystem;
 using UnityEngine;
 using UnityEngine.UI;
